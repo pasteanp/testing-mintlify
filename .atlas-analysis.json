@@ -1,13 +1,11 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
+  "projectType": "general",
+  "projectName": "AI Prototyping for UX Designers",
+  "projectDescription": "A practical guide for UX designers on how to use AI tools and a GitHub repository to rapidly prototype user interfaces and experiences.",
   "theme": "willow",
-  "name": "AI Prototyping for UX Designers",
-  "colors": {
-    "primary": "#ef7025",
-    "light": "#eec9bc",
-    "dark": "#4fa1ab"
-  },
-  "favicon": "/favicon.svg",
+  "primaryColor": "#ef7025",
+  "lightColor": "#eec9bc",
+  "darkColor": "#4fa1ab",
   "navigation": {
     "tabs": [
       {
@@ -56,7 +54,7 @@
             ]
           },
           {
-            "group": "FAQ",
+            "group": "FAQ & Troubleshooting",
             "pages": [
               "faq/common-questions",
               "faq/troubleshooting"
@@ -66,14 +64,19 @@
       }
     ]
   },
-  "navbar": {
-    "primary": {
-      "type": "button",
-      "label": "Get Started",
-      "href": "/introduction"
-    }
-  },
-  "footer": {
-    "socials": {}
-  }
+  "keyFeatures": [
+    "AI-assisted UI prototyping for non-engineers",
+    "GitHub-based workflow for version-controlled design artifacts",
+    "Prompt engineering techniques tailored to UX design tasks",
+    "Component generation from design descriptions",
+    "Iterative refinement of AI-generated prototypes",
+    "Ready-to-use templates for common UX patterns",
+    "Accessibility and responsive design guidance"
+  ],
+  "publicApiSurface": [
+    "GitHub repository structure and branching conventions",
+    "AI prompt templates for UX design",
+    "Component generation workflow",
+    "Design-to-code translation techniques"
+  ]
 }

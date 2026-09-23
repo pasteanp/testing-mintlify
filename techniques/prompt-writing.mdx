@@ -1,0 +1,180 @@
+---
+title: "Advanced Prompt Writing for UX Prototyping"
+sidebarTitle: "Prompt Writing"
+description: "Master advanced prompt-writing techniques for UX designers — specificity, constraints, persona framing, and multi-step prompts for complex prototypes."
+---
+
+Writing effective prompts is the core skill that separates good AI prototypes from mediocre ones. This page goes beyond basics to teach advanced techniques that get you consistent, high-quality output — so you spend less time fixing generated code and more time iterating on your designs.
+
+## Be Specific About Framework and Styling
+
+Vague prompts produce vague results. Always state the exact technology stack upfront: the UI framework (React, HTML, Vue), the CSS approach (Tailwind, CSS modules, styled-components), and any component library you're using (shadcn/ui, Chakra UI, Material UI). This single habit dramatically improves the quality of generated code.
+
+Open every prompt with a clear technology declaration:
+
+```text Component Prompt Opening
+Create a React component using Tailwind CSS and shadcn/ui components.
+The component should be written in TypeScript and use functional component syntax with named exports.
+```
+
+Without this context, the AI may mix frameworks, use inline styles, or generate class-based components — all of which create extra work during handoff.
+
+## Describe States and Edge Cases
+
+Every UI element has multiple states, and AI won't generate them unless you ask. Before writing your prompt, think through the full lifecycle of the component and list every state explicitly.
+
+Common states to cover:
+
+| State | Description |
+|-------|-------------|
+| **Default** | The component at rest |
+| **Hover** | Mouse over an interactive element |
+| **Focus** | Keyboard or click focus ring |
+| **Loading** | Async operation in progress |
+| **Error** | Validation failure or request error |
+| **Empty** | No data to display |
+| **Success** | Operation completed |
+
+Include a states section in your prompts:
+
+```text States Prompt Block
+Include all UI states for this component:
+- Default: shows the user's current profile data
+- Loading: skeleton placeholder while data fetches
+- Error: inline error message with a retry button
+- Empty: illustrated empty state with a CTA to add data
+- Success: brief success toast after saving changes
+```
+
+## Use Design Constraints
+
+Giving the AI design constraints keeps the output within your actual design system. Without constraints, generated components often use arbitrary spacing, oversized containers, or colors that clash with your brand.
+
+Constraints to include in your prompts:
+
+- **Max-width** — e.g., `max-w-4xl` or `max-width: 1280px`
+- **Grid system** — e.g., 12-column grid, or Tailwind's grid utilities
+- **Spacing scale** — e.g., stick to Tailwind's spacing scale (4px base unit)
+- **Color tokens** — reference your actual token names, not raw hex values
+
+```text Design Constraints Prompt Block
+Apply these design constraints:
+- Container max-width: max-w-5xl, centered with mx-auto
+- Use an 8-column grid for desktop, single column for mobile
+- Spacing: use only Tailwind spacing utilities (p-4, gap-6, mt-8, etc.)
+- Colors: use CSS variables --color-primary, --color-surface, --color-text-muted
+- Border radius: rounded-lg for cards, rounded-md for inputs, rounded-full for badges
+```
+
+## Multi-Step Prompting
+
+Complex screens are hard to generate in a single prompt. The AI has limited context, and trying to describe an entire dashboard in one shot usually produces a tangled, hard-to-edit result. Instead, break your work into sequential steps — each prompt builds on the output of the last.
+
+<Steps>
+  <Step title="Layout Structure">
+    Start with the skeleton. Describe the overall page layout: header, sidebar, main content area, footer. Don't mention specific components or content yet.
+
+    ```text Step 1 Prompt
+    Create the layout structure for a SaaS dashboard page.
+    Use React and Tailwind CSS.
+    Layout: fixed top navigation bar, collapsible left sidebar (240px), main content area that fills remaining space, no footer.
+    Use semantic HTML (header, nav, main, aside).
+    ```
+  </Step>
+  <Step title="Individual Components">
+    Fill in each region with its specific components. Reference the layout output from Step 1 and add detail for one section at a time.
+
+    ```text Step 2 Prompt
+    Using the dashboard layout from before, build out the main content area.
+    Add a page title ("Analytics"), a date range picker in the top-right, and a 2x2 grid of stat cards below.
+    Each stat card shows: metric name, current value, percentage change vs. last period, and a sparkline chart.
+    ```
+  </Step>
+  <Step title="Interactions">
+    Layer in interactivity once the visual structure is solid. Describe click handlers, toggle states, form submissions, and animations.
+
+    ```text Step 3 Prompt
+    Add interactions to the dashboard:
+    - Sidebar collapses to icon-only mode when the toggle button is clicked
+    - Stat cards have a hover effect that elevates them with a subtle shadow
+    - The date range picker opens a popover calendar on click
+    - Changing the date range triggers a loading skeleton on the stat cards
+    ```
+  </Step>
+  <Step title="Responsive Adjustments">
+    Finally, address responsiveness. With the desktop layout solid, describe how it should adapt to smaller screens.
+
+    ```text Step 4 Prompt
+    Make the dashboard fully responsive:
+    - Mobile (< 768px): sidebar hidden by default, shown as a full-screen overlay when menu icon is tapped
+    - Tablet (768px–1024px): sidebar collapses to icon-only mode by default
+    - Desktop (> 1024px): sidebar fully expanded
+    - Stat card grid: 1 column on mobile, 2 columns on tablet, 4 columns on desktop
+    ```
+  </Step>
+</Steps>
+
+## Prompt Patterns Library
+
+These reusable patterns solve common prompting challenges. Mix and match them depending on what stage of the design process you're in.
+
+<Accordion title="The Design Brief — Start with context before the request">
+  Before making your request, give the AI the context a real designer would have. Describe the product, the user, and the goal. This produces output that fits the actual design intent rather than a generic interpretation.
+
+  ```text Design Brief Pattern
+  Context:
+  - Product: a project management tool for remote design teams
+  - User: a senior UX designer managing 3–5 projects simultaneously
+  - Goal: this screen lets them see all active projects at a glance and quickly jump to the one that needs attention
+  - Tone: professional but warm, minimal chrome, content-forward
+
+  Request:
+  Create a project overview dashboard that shows each project as a card with: project name, status badge (On Track / At Risk / Blocked), due date, team member avatars, and a progress bar. Cards should be scannable in under 5 seconds.
+  ```
+</Accordion>
+
+<Accordion title="The Critic — Ask AI to review and suggest improvements">
+  After generating a component, ask the AI to critique it before you do. This surfaces issues you might miss and often produces a better second draft without extra design work on your part.
+
+  ```text Critic Pattern
+  Review the component you just generated and critique it from the perspective of an experienced UX designer. Consider:
+  - Visual hierarchy: is the most important information obvious at a glance?
+  - Spacing: does anything feel cramped or overly sparse?
+  - Accessibility: are there any obvious accessibility issues?
+  - Edge cases: what breaks if the text is 3x longer, or if there's no data?
+
+  After your critique, generate an improved version that addresses the issues you identified.
+  ```
+</Accordion>
+
+<Accordion title="The Variations — Ask for 3 different approaches to the same problem">
+  When you're not sure which design direction to take, ask for multiple options in a single prompt. This is the AI equivalent of rapid concept sketching.
+
+  ```text Variations Pattern
+  Generate 3 different design approaches for a user onboarding flow's first screen. Each variation should have a distinct layout and interaction pattern:
+
+  Variation A: Minimal — single focused question, progress bar at top
+  Variation B: Social proof — testimonial quote on the left, form on the right
+  Variation C: Visual — full-screen background image, form overlay at the bottom
+
+  Build all three as separate React components in the same file, exported as OnboardingA, OnboardingB, OnboardingC.
+  ```
+</Accordion>
+
+<Accordion title="The Annotator — Ask AI to add comments explaining each section">
+  When you need to hand off a prototype to developers, or when you want to understand the generated code yourself, ask the AI to annotate its output. This turns a prototype into a living spec document.
+
+  ```text Annotator Pattern
+  Generate the component, then add inline comments throughout the code that explain:
+  - The purpose of each major section
+  - Why specific Tailwind classes were chosen (e.g., "// overflow-hidden prevents text from breaking the card boundary")
+  - Where a developer would connect real data or API calls
+  - Any assumptions made about the design that should be confirmed
+
+  Format comments as // DESIGN NOTE: for design decisions and // DEV NOTE: for implementation notes.
+  ```
+</Accordion>
+
+<Tip>
+  Keep a `prompts/` folder in your repo and commit effective prompts alongside your prototype code. A prompt that produced a great result is a reusable asset — future you (and your teammates) will thank you for saving it.
+</Tip>

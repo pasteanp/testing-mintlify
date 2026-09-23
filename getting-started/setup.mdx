@@ -1,0 +1,113 @@
+---
+title: "Set Up Your AI Prototyping Environment"
+sidebarTitle: "Setup"
+description: "Install the tools you need to start AI prototyping as a UX designer — from GitHub to your AI coding assistant, set up in under 30 minutes."
+---
+
+Getting started with AI prototyping requires a few one-time setup steps. This page walks you through creating a GitHub account, installing an AI coding assistant, and configuring your local environment. By the end, you'll have everything you need to start turning design ideas into working prototypes.
+
+<Tip>
+  Cursor is recommended for beginners because it has AI built directly into the editor with no additional configuration — you can start prompting immediately after opening a project.
+</Tip>
+
+<Note>
+  All tools mentioned on this page have free tiers that are fully suitable for prototyping work. You don't need to pay anything to get started.
+</Note>
+
+---
+
+## Setup Steps
+
+<Steps>
+
+  ### Create a GitHub Account
+
+  GitHub is where your prototype code lives and where you'll collaborate with developers. If you don't already have an account, sign up for free.
+
+  1. Go to [github.com](https://github.com) and click **Sign up**.
+  2. Enter your **email address**, create a **password**, and choose a **username** (your username will be visible on shared links, so pick something professional).
+  3. Verify your email and complete the onboarding prompts — choose **Free** when asked about a plan.
+
+  You'll use this account to access repositories, save your work, and authenticate with AI tools like GitHub Copilot.
+
+  ### Fork or Clone the Repository
+
+  You'll work from a GitHub repository that contains starter templates, component libraries, and prompt examples. The fastest way to get this onto your computer is to **clone** it — this downloads a full copy to your machine that stays linked to GitHub.
+
+  Open your terminal (on Mac: press `⌘ + Space`, type `Terminal`) and run:
+
+  ```bash
+  git clone https://github.com/your-org/your-repo.git
+  ```
+
+  <Note>
+    Replace `https://github.com/your-org/your-repo.git` with the actual repository URL provided by your team or project lead. You can copy the correct URL from the repository's GitHub page by clicking the green **Code** button.
+  </Note>
+
+  This creates a new folder on your computer with all the starter files inside. You only need to do this once per project.
+
+  ### Install an AI Coding Assistant
+
+  Choose the AI coding assistant that best fits your workflow. You can always switch later, or use more than one.
+
+  <Tabs>
+    <Tab title="Cursor (Recommended)">
+      Cursor is an AI-first code editor — think of it as VS Code with a powerful AI assistant built in. There's no separate extension to configure; the AI is already there when you open the app.
+
+      1. Download Cursor from [cursor.sh](https://cursor.sh) — it's free to get started.
+      2. Install it like any other Mac or Windows app and open it.
+      3. Sign in with your GitHub account to unlock additional features.
+
+      Cursor has two main modes: **Chat** (ask questions about your code) and **Edit** (ask it to write or change code in place). Both are ideal for prototyping workflows.
+    </Tab>
+    <Tab title="GitHub Copilot">
+      GitHub Copilot lives inside your existing editor and suggests code as you type — similar to autocomplete but for entire functions and components. It's deeply integrated with VS Code and JetBrains IDEs.
+
+      1. Install [Visual Studio Code](https://code.visualstudio.com) if you haven't already.
+      2. Open VS Code, go to the **Extensions** panel (⇧⌘X), and search for **GitHub Copilot**. Click **Install**.
+      3. Sign in with your GitHub account when prompted. Copilot is free for students and $10/month for everyone else.
+
+      Copilot works best when you already have a file open — it reads the context of your current file and generates suggestions inline as you type.
+    </Tab>
+    <Tab title="Claude / ChatGPT">
+      Claude (by Anthropic) and ChatGPT (by OpenAI) are browser-based AI assistants that are excellent for generating full component files from written design briefs. You describe what you want, and they write the code for you to paste into your project.
+
+      - **Claude**: Visit [claude.ai](https://claude.ai) — free tier available, Pro is $20/month.
+      - **ChatGPT**: Visit [chat.openai.com](https://chat.openai.com) — free tier available, Plus is $20/month.
+
+      Both tools work without any installation. Paste in your design description or an existing file for context, then ask for the code you need. These tools are especially useful for generating first drafts of complex components.
+    </Tab>
+  </Tabs>
+
+  ### Open the Repository in Your Editor
+
+  Now point your editor at the folder you cloned in Step 2.
+
+  **In Cursor or VS Code:**
+  1. Open the app.
+  2. Go to **File → Open Folder…**
+  3. Navigate to the folder you cloned (it will have the same name as the repository) and click **Open**.
+
+  You should see the full file tree in the left sidebar. Your AI assistant can now read the project files for context when you ask it questions.
+
+  ### Verify Your Setup
+
+  Run a quick sanity check to confirm everything is working before you dive into your first prototype.
+
+  1. In your editor's file tree, open any `.jsx`, `.tsx`, or `.html` file from the starter templates.
+  2. Open the AI chat panel (in Cursor: press `⌘L`; in VS Code with Copilot: open the Copilot Chat sidebar).
+  3. Type a simple question about the open file, for example:
+
+  ```
+  What does this component do? Summarize it in plain English.
+  ```
+
+  If the AI responds with an accurate description of the file's contents, your setup is complete. If you're using Claude or ChatGPT in the browser, paste the file contents in and ask the same question.
+
+</Steps>
+
+---
+
+## What's Next?
+
+With your environment ready, you can move on to learning the GitHub basics you'll use every day — branching, committing, and keeping your work organised.

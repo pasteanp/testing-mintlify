@@ -1,0 +1,251 @@
+---
+title: "Troubleshooting Common AI Prototyping Issues"
+sidebarTitle: "Troubleshooting"
+description: "Fix the most common problems in AI prototyping — from bad AI output and broken layouts to GitHub issues and preview problems."
+---
+
+AI prototyping runs smoothly most of the time, but when it doesn't, these solutions will get you back on track quickly.
+
+<Tip>
+  When asking AI to fix an error, always paste the full error message. AI assistants can't guess what went wrong without seeing the exact error.
+</Tip>
+
+---
+
+## AI Output Issues
+
+<AccordionGroup>
+
+  <Accordion title="The AI keeps generating the wrong layout">
+    Vague layout instructions are the most common source of frustrating output. The AI can't see your mental picture — it can only work with what you describe in words.
+
+    **How to fix it:**
+
+    1. **Add explicit layout constraints** — instead of "a two-column layout," write: *"A two-column layout where the left column is 320px wide and fixed, and the right column fills the remaining space using flexbox."*
+
+    2. **Specify your grid system** — if you're using a 12-column grid, say so: *"Use a 12-column CSS grid with 24px gutters."*
+
+    3. **Sketch it in ASCII** — this sounds odd but works remarkably well. Paste a rough ASCII wireframe directly into your prompt:
+
+    ```
+    +------------------+-----------------------------+
+    |   Sidebar (240px)|   Main Content (fluid)      |
+    |                  |                             |
+    |   Nav links      |   Page title                |
+    |                  |   Card grid (3 columns)     |
+    +------------------+-----------------------------+
+    ```
+
+    The AI will use this as a structural reference and produce much more accurate results.
+  </Accordion>
+
+  <Accordion title="Generated code has syntax errors">
+    Syntax errors happen — even experienced developers deal with them. The good news is that fixing them is something AI tools do very reliably.
+
+    **How to fix it:**
+
+    Copy the error message from your browser console or code editor, then ask the AI to fix it directly:
+
+    > *"This code has errors, please fix: [paste the full error message here]"*
+
+    Or, if you're using Cursor, highlight the broken section of code, right-click, and choose **"Fix with AI"** — it will read the error in context and apply a targeted fix.
+
+    <Note>
+      Always paste the **full** error message, including the file name and line number if shown. Partial errors give the AI less to work with and lead to slower fixes.
+    </Note>
+
+    If the same error keeps reappearing after multiple fix attempts, try asking the AI to explain what's causing it — understanding the root issue often reveals a better solution.
+  </Accordion>
+
+  <Accordion title="The AI ignores part of my prompt">
+    This happens when your prompt is too long or too complex. AI models have a limited "attention window," and when you ask for many things at once, some instructions get deprioritized or lost.
+
+    **How to fix it:**
+
+    - **Break your request into smaller steps** — instead of one massive prompt, send a series of focused ones. Build the skeleton first, then add interactions, then apply styling.
+    - **Put your most important instructions first** — AI models tend to follow instructions that appear near the beginning of a prompt more reliably.
+    - **Confirm each step** — after each generation, check that the key requirements are met before moving on. It's much easier to course-correct early.
+    - **Repeat critical constraints** — if color or spacing rules are non-negotiable, restate them in each new prompt rather than assuming the AI remembers from earlier.
+  </Accordion>
+
+  <Accordion title="AI generates vanilla CSS instead of Tailwind">
+    This is a prompting habit issue — the AI defaults to plain CSS unless you explicitly tell it otherwise.
+
+    **How to fix it:**
+
+    Always state your styling approach at the **start** of your prompt, not the end:
+
+    > *"Using Tailwind CSS, create a card component that..."*
+
+    If you've already generated vanilla CSS and want to switch, ask the AI directly:
+
+    > *"Rewrite this component to use Tailwind CSS utility classes instead of the inline styles and custom CSS classes."*
+
+    <Tip>
+      If you find yourself writing "using Tailwind CSS" in every prompt, add it to a persistent system prompt (available in Cursor and Claude) so it's always in context.
+    </Tip>
+  </Accordion>
+
+  <Accordion title="The output looks nothing like my wireframe">
+    When there's a large gap between your wireframe and the generated output, it usually means the AI didn't have enough structural information to work from.
+
+    **How to fix it:**
+
+    - **Describe structure, not just content** — instead of *"a homepage for a travel app,"* write: *"A homepage with a full-width hero section containing a centered headline, subheading, and CTA button. Below that, a three-column feature grid. Below that, a testimonials section with a carousel."*
+
+    - **Use an ASCII wireframe in your prompt** — this is the single most effective technique for complex layouts. Rough is fine; the AI just needs the structural logic:
+
+    ```
+    [HERO - full width, dark background]
+       Big headline
+       Subheadline
+       [CTA Button]
+
+    [3-column grid]
+    [Icon + title]  [Icon + title]  [Icon + title]
+    [Description]   [Description]   [Description]
+
+    [Testimonials - light background]
+    ```
+
+    - **Reference a known UI pattern** — *"laid out like a standard SaaS landing page"* or *"similar to a Material Design list view"* can help the AI anchor to familiar patterns.
+  </Accordion>
+
+</AccordionGroup>
+
+---
+
+## Preview & Environment Issues
+
+<AccordionGroup>
+
+  <Accordion title="The prototype won't load in CodeSandbox">
+    A prototype that fails to load is almost always a dependency problem — the code references a package that isn't installed in the sandbox environment.
+
+    **How to fix it:**
+
+    <Steps>
+      <Step title="Check the console for errors">
+        Open the browser console (F12 → Console tab) or look at the CodeSandbox terminal panel. You're looking for messages like `Cannot find module 'react-icons'` or `Failed to resolve import`.
+      </Step>
+      <Step title="Ask the AI what's needed">
+        Paste the error into your AI tool and ask: *"What dependencies does this code need? List the npm packages I need to install."*
+      </Step>
+      <Step title="Install the missing packages">
+        In CodeSandbox, open the **Dependencies** panel on the left sidebar and search for the missing package name to add it. Alternatively, open the terminal and run `npm install [package-name]`.
+      </Step>
+      <Step title="Reload the preview">
+        Once dependencies are installed, the preview should reload automatically. If not, click the refresh button in the preview panel.
+      </Step>
+    </Steps>
+
+    <Note>
+      When generating new prototypes, you can ask the AI upfront: *"List all the npm packages this code requires."* Adding this to your standard prompt prevents most dependency issues before they happen.
+    </Note>
+  </Accordion>
+
+  <Accordion title="Components look broken in the browser">
+    Broken component rendering — missing styles, wrong positioning, overlapping elements — almost always leaves a trace in the browser console.
+
+    **How to fix it:**
+
+    1. **Open the browser console** — press `F12` (or `Cmd+Option+I` on Mac) and click the **Console** tab. Look for red error messages.
+    2. **Paste the errors back to AI** — copy every red error message and ask: *"My component is rendering incorrectly. Here are the console errors: [paste errors]. How do I fix this?"*
+    3. **Check the Elements panel** — in browser DevTools, the Elements tab lets you inspect the actual rendered HTML. Compare it to what you expected; this often reveals a structural issue.
+    4. **Look for missing closing tags or bracket mismatches** — if the AI generated JSX, a missing `>` or `}` can cause the entire component to render incorrectly.
+  </Accordion>
+
+  <Accordion title="CSS isn't applying correctly">
+    When styles don't appear to be working, there are a few common culprits.
+
+    **How to fix it:**
+
+    - **Check for class name conflicts** — if you have both custom CSS classes and Tailwind classes, they may be fighting each other. Pick one approach and remove the other.
+    - **Verify Tailwind is configured** — if you're using Tailwind, make sure `tailwind.config.js` includes your file paths in the `content` array. If Tailwind can't find your class names, it won't include them in the build:
+      ```js
+      content: ["./src/**/*.{js,jsx,ts,tsx}"]
+      ```
+    - **Check for a CSS reset conflict** — some environments inject a global reset that overrides expected defaults. Ask the AI: *"Could a CSS reset be affecting my styles? How do I check?"*
+    - **Inspect with DevTools** — in the browser Elements panel, click on the affected element and look at the **Styles** tab. Crossed-out styles indicate a property is being overridden.
+  </Accordion>
+
+</AccordionGroup>
+
+---
+
+## GitHub Issues
+
+<AccordionGroup>
+
+  <Accordion title="I can't push to the repository">
+    A failed push is almost always a permissions issue. Here's how to work through it:
+
+    **How to fix it:**
+
+    - **Check your permissions** — if the repo belongs to someone else (an organization or another designer), you may not have write access. Ask the repo owner to add you as a collaborator under **Settings → Collaborators**.
+    - **Fork the repo to your own account** — if you don't have write access and can't get it, fork the repo to your personal GitHub account. You'll have full control over your fork and can open a pull request back to the original when you're ready.
+    - **Re-authenticate** — sometimes GitHub tokens expire. In GitHub Desktop, go to **File → Options → Accounts** and sign out and back in. In the terminal, run `git push` and follow the authentication prompt.
+
+    <Tip>
+      Using **GitHub Desktop** instead of the command line makes it much easier to spot permission errors — it shows a clear message explaining why the push failed.
+    </Tip>
+  </Accordion>
+
+  <Accordion title="I lost changes I made">
+    Losing work in git is less permanent than it feels — git almost always preserves your changes somewhere. Here's where to look:
+
+    **How to recover:**
+
+    - **Check your branch** — you may have committed changes to a different branch than you think. In GitHub Desktop, open the **Branch** menu to see all branches and their recent commits.
+    - **Use git stash** — if you switched branches without committing, git may have stashed your changes automatically. In the terminal, run `git stash list` to see if anything was saved, then `git stash pop` to restore the most recent stash.
+    - **Check the reflog** — git keeps a history of everything you've done, even undone commits. In the terminal, run `git reflog` to see a full log. If you find the commit you want, run `git checkout [commit-hash]` to recover it.
+
+    <Note>
+      The best prevention is committing little and often. Get in the habit of committing after every meaningful chunk of work — even rough, in-progress saves. You can always tidy up commit messages later.
+    </Note>
+  </Accordion>
+
+  <Accordion title="Merge conflicts">
+    A merge conflict happens when two people (or two branches) have made different changes to the same part of the same file, and git can't automatically decide which version to keep. It sounds alarming, but it's a normal part of collaborative work.
+
+    **What a conflict looks like:**
+
+    Git marks the conflicting section in the file like this:
+    ```
+    <<<<<<< HEAD
+    backgroundColor: '#ef7025',
+    =======
+    backgroundColor: '#ff6600',
+    >>>>>>> feature/new-styles
+    ```
+    Everything between `<<<<<<< HEAD` and `=======` is your version. Everything between `=======` and `>>>>>>>` is the incoming version.
+
+    **How to fix it:**
+
+    - **Use GitHub Desktop** — it has a built-in visual conflict resolver that shows both versions side by side and lets you choose which to keep (or manually edit a combined version). This is by far the easiest approach for designers.
+    - **Use VS Code's merge editor** — if you have VS Code installed, it offers a similar visual three-way merge interface. Open the conflicting file and click **"Resolve in Merge Editor"**.
+    - **Ask AI to help** — paste the conflicting file section into your AI tool and ask: *"Here are two conflicting versions of this code. Help me merge them correctly: [paste both versions]."*
+
+    Once you've resolved all conflicts, save the file, then commit the resolution.
+  </Accordion>
+
+</AccordionGroup>
+
+---
+
+## Getting More Help
+
+If the solutions above don't resolve your issue, here's where to go next:
+
+- **AI tool documentation** — [Cursor Docs](https://cursor.sh/docs), [Anthropic's Claude documentation](https://docs.anthropic.com), and [GitHub Copilot docs](https://docs.github.com/en/copilot) all have detailed troubleshooting sections written by the teams who build these tools.
+
+- **GitHub's help docs** — [docs.github.com](https://docs.github.com) covers every git and GitHub concept in depth, with guides written for beginners. The [GitHub Desktop documentation](https://docs.github.com/en/desktop) is especially useful if you're avoiding the command line.
+
+- **Design communities** — posting in design-focused communities is a great way to get help from people who've solved the same problems:
+  - [Figma Community Forum](https://forum.figma.com) — active discussions on design tooling and workflows
+  - [Designer Hangout](https://www.designerhangout.co) — a Slack community with channels for tools and prototyping
+  - [UX Stack Exchange](https://ux.stackexchange.com) — great for specific, searchable questions
+
+<Note>
+  When asking for help in a community forum, share your prompt, the generated output, and the specific error you're seeing. The more context you provide, the faster and more useful the responses will be.
+</Note>

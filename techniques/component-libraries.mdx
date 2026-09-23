@@ -1,0 +1,143 @@
+---
+title: "Using Component Libraries in AI Prototyping"
+sidebarTitle: "Component Libraries"
+description: "Leverage popular component libraries like shadcn/ui, Tailwind UI, and Material UI in AI-generated prototypes for faster, more consistent results."
+---
+
+Component libraries give AI prototyping a massive boost — instead of generating UI from scratch, you can instruct the AI to use pre-built, well-tested components that match real production patterns. The result is prototypes that look production-ready immediately and that developers can actually build from.
+
+## Why Use a Component Library?
+
+Referencing a known component library in your prompts pays dividends across the entire design-to-development workflow:
+
+- **Faster generation** — The AI already knows the component API, so it writes correct, working code on the first pass
+- **Consistent styling** — Every component follows the same design language without extra instruction from you
+- **Closer to real code** — Prototypes use the same components your dev team will use in production
+- **Easier handoff** — Developers recognize the components immediately and don't need to reverse-engineer your prototype's styling
+- **Less debugging** — Pre-built components handle edge cases (focus states, ARIA, responsive behavior) that scratch-built code often misses
+
+## Recommended Libraries
+
+<CardGroup cols={2}>
+  <Card title="shadcn/ui" icon="layers" color="#ef7025">
+    Modern, composable components built on Radix UI primitives and styled with Tailwind CSS. Copy-paste into your project — no package to install. The top recommendation for React prototyping.
+
+    **Best for:** React + Tailwind projects, teams wanting full control over component source
+  </Card>
+  <Card title="Tailwind UI" icon="paint-brush" color="#ef7025">
+    A library of beautifully designed, pre-built page sections and components from the Tailwind CSS team. Buy-once, use forever — includes React, Vue, and plain HTML versions.
+
+    **Best for:** Quickly assembling realistic page layouts and marketing sites
+  </Card>
+  <Card title="Chakra UI" icon="universal-access" color="#ef7025">
+    Accessible by default, with a clean component API and a powerful theming system. Every component meets WCAG accessibility guidelines out of the box.
+
+    **Best for:** Prototypes where accessibility is a priority or the design system uses custom themes
+  </Card>
+  <Card title="Material UI (MUI)" icon="google" color="#ef7025">
+    Google's Material Design system implemented in React. Comprehensive, battle-tested, and familiar to users of Google products. Includes a rich data grid, date pickers, and complex components.
+
+    **Best for:** Enterprise products, internal tools, or designs following Material Design guidelines
+  </Card>
+</CardGroup>
+
+## Prompting with shadcn/ui
+
+shadcn/ui is the most recommended library for AI prototyping because its components have clear, memorable names that AI models know well, and because it uses Tailwind CSS for styling — so you get full control without fighting a separate styling system.
+
+### Setting Up shadcn/ui
+
+If you're starting a new prototype project, initialize shadcn/ui with:
+
+```bash
+npx shadcn-ui@latest init
+```
+
+Then add individual components as you need them:
+
+```bash
+npx shadcn-ui@latest add button card input select
+```
+
+### Writing Prompts for shadcn/ui
+
+Reference components by their exact names from the shadcn/ui documentation. The AI will use the correct import paths and component APIs automatically:
+
+<CodeGroup>
+  ```text shadcn/ui Component Prompt
+  Using shadcn/ui components and Tailwind CSS, create a settings page with:
+  - A Card component containing a form
+  - Input fields for name and email using the Input component
+  - A Select dropdown for timezone using the Select component
+  - A Button component with variant="default" to save changes
+  - A Separator between the personal info section and the notification preferences section
+  - A Switch component for each notification preference toggle
+  - A Tabs component at the top to switch between "Profile", "Notifications", and "Security" sections
+  ```
+
+  ```text shadcn/ui Data Table Prompt
+  Using shadcn/ui and Tailwind CSS, create a users data table with:
+  - A Table component with columns: Name, Email, Role (Badge), Status (Badge), Actions
+  - A DropdownMenu for the Actions column with options: Edit, Duplicate, Delete
+  - A Dialog component that opens when Edit is clicked, containing a form to update the user
+  - An Input with a search icon for filtering users above the table
+  - Pagination using the Pagination component at the bottom
+  ```
+</CodeGroup>
+
+<Note>
+  When prompting with a library, include the exact component names from that library's documentation for best results. For example, use `DropdownMenu`, `CommandDialog`, and `AlertDialog` — not "dropdown", "search modal", or "confirm popup".
+</Note>
+
+## Staying Consistent
+
+Consistency across a prototype is what makes it feel like a real product. When every screen uses the same buttons, spacing, and color palette, stakeholders can evaluate the design rather than getting distracted by inconsistencies.
+
+Follow these practices to keep your AI-generated prototype consistent throughout:
+
+**Pick one library per project.** Mixing shadcn/ui with Chakra UI in the same prototype creates conflicting styles and makes component prompting much harder. Commit to one library at the start of the project.
+
+**Include the library version in your prompts.** Component APIs change between versions. Specifying the version prevents the AI from generating code for an older or newer API than you're using.
+
+```text Version-Pinned Prompt Opening
+Using shadcn/ui (v0.8+) and Tailwind CSS v3, create...
+```
+
+**Maintain a `design-tokens.ts` file** that captures your brand's visual vocabulary — colors, fonts, border radii, and shadow values — and reference it in every prompt:
+
+```typescript design-tokens.ts
+export const tokens = {
+  colors: {
+    primary: "#ef7025",
+    primaryHover: "#d4611a",
+    surface: "#ffffff",
+    surfaceMuted: "#f9fafb",
+    border: "#e5e7eb",
+    textPrimary: "#111827",
+    textMuted: "#6b7280",
+    success: "#16a34a",
+    warning: "#d97706",
+    error: "#dc2626",
+  },
+  fonts: {
+    sans: "Inter, system-ui, sans-serif",
+    mono: "JetBrains Mono, monospace",
+  },
+  radii: {
+    sm: "0.375rem",   // rounded-md
+    md: "0.5rem",     // rounded-lg
+    full: "9999px",   // rounded-full
+  },
+}
+```
+
+Then reference your tokens in prompts:
+
+```text Design Token Reference Prompt
+Use the brand colors from our design-tokens.ts file:
+- Primary actions: #ef7025 (primary) with #d4611a on hover
+- Page backgrounds: #f9fafb (surfaceMuted)
+- Card backgrounds: #ffffff (surface) with a #e5e7eb border
+- Destructive actions: #dc2626 (error)
+All colors must be applied via Tailwind arbitrary values or CSS variables, not hardcoded inline styles.
+```

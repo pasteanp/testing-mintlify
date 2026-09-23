@@ -1,0 +1,115 @@
+---
+title: "Review and Evaluate AI-Generated Prototype Output"
+sidebarTitle: "Reviewing Output"
+description: "A UX designer's checklist for reviewing AI-generated prototypes — what to look for, how to spot issues, and how to give better feedback."
+---
+
+Reviewing AI-generated output is a skill in itself. As a UX designer, you're not checking the code — you're evaluating the prototype against your design intent and user experience goals. This page gives you a structured approach to that review: what to look at, what to skip, and how to turn what you find into effective follow-up prompts.
+
+---
+
+## The Designer's Review Checklist
+
+Work through this checklist every time you preview a newly generated or updated component. Each category maps to a different aspect of the user experience.
+
+### ✅ Visual
+
+- [ ] Does the layout match your wireframe — element positions, columns, card structure?
+- [ ] Are spacing and padding consistent? (Look for elements that feel too tight or too far apart)
+- [ ] Is the typography correct — font, size, weight, line height, color?
+- [ ] Are the colors right? (Primary actions, backgrounds, text, borders)
+- [ ] Does the component look right at desktop width? At tablet? At mobile?
+- [ ] Do the border-radius, shadow, and other decorative details match your design system?
+
+### ✅ Functional
+
+- [ ] Do interactive elements respond to clicks, hovers, and keyboard input?
+- [ ] Are all states represented — hover, active/pressed, focus, disabled?
+- [ ] If there's a form, does the error state display when you submit invalid input?
+- [ ] Are loading or skeleton states included where relevant?
+- [ ] Does an empty state display when there's no content to show?
+
+### ✅ Content
+
+- [ ] Is placeholder text realistic and context-appropriate? (Avoid Lorem Ipsum in prototypes you'll show to stakeholders)
+- [ ] Are labels, headings, and CTAs clear and correctly spelled?
+- [ ] Do numbers, dates, and data look believable for the context?
+
+### ✅ Accessibility
+
+- [ ] Is there sufficient color contrast between text and background? (Aim for at least 4.5:1 for body text)
+- [ ] Can you tab through the UI in a logical order using only the keyboard?
+- [ ] Do interactive elements have a visible focus ring?
+- [ ] Are form inputs paired with visible labels (not just placeholder text)?
+
+<Note>
+  **What you don't need to review**
+
+  You don't need to evaluate code quality, performance, bundle size, or implementation details — that's the developer's job during handoff. Your review is purely about whether the prototype communicates the design intent correctly. If it looks right and behaves right, it's doing its job.
+</Note>
+
+---
+
+## Giving Effective Feedback to the AI
+
+When the review turns up something to fix, turn it into a precise follow-up prompt. Vague feedback ("it doesn't look right") produces vague results. Specific, actionable feedback produces targeted fixes.
+
+Use this pattern: **describe the problem, then state the desired outcome.**
+
+<CardGroup cols={1}>
+  <Card title="Example: Button too small on mobile" icon="mobile">
+    **Problem found in review:** The CTA button is only 32px tall on a phone screen — too small to tap reliably.
+
+    **Follow-up prompt:**
+    ```text
+    The CTA button needs to be at least 44px tall on mobile screens (below 768px).
+    Update the responsive styles so the button height is 44px and the font size is 16px at breakpoints under 768px.
+    Do not change the desktop styles.
+    ```
+  </Card>
+</CardGroup>
+
+Here are more examples of review findings turned into actionable prompts:
+
+| Review finding | Follow-up prompt |
+|---|---|
+| Error message is easy to miss — same size as body text | "Make the error message text bold and change the color to #d32f2f. Add a small warning icon to the left of the text." |
+| Focus ring is invisible on the dark background | "The focus ring on the input fields is not visible on the dark background. Change the focus ring color to #ef7025 with a 2px offset." |
+| Empty state is missing from the data table | "Add an empty state to the table component. When there are no rows, show a centered illustration placeholder, the text 'No results yet', and a primary button labeled 'Add your first item'." |
+| Hover state missing on nav items | "Add a hover background color of #f5f5f5 to each navigation item. Transition the background over 120ms with ease-in-out easing." |
+
+---
+
+## Sharing for Stakeholder Review
+
+Once a prototype passes your review checklist, you're ready to share it. Choose the method that fits your audience and context.
+
+<CardGroup cols={3}>
+  <Card title="CodeSandbox Link" icon="link">
+    Share a direct link to your CodeSandbox project. Stakeholders can view the live prototype in their browser without installing anything. Click **Share** in the top-right corner to copy a shareable URL.
+  </Card>
+  <Card title="GitHub Pages" icon="github">
+    Push your prototype to a GitHub repository and enable GitHub Pages under **Settings → Pages**. Your prototype becomes a public (or private) URL that updates every time you push new changes.
+  </Card>
+  <Card title="Loom Recording" icon="video">
+    Record a walkthrough with [Loom](https://loom.com) to narrate the prototype and highlight specific interactions. This works well for async reviews with stakeholders who aren't available for a live call.
+  </Card>
+</CardGroup>
+
+**To share via GitHub Pages:**
+
+<Steps>
+  <Step title="Push your prototype to a GitHub repository">
+    If you haven't already, create a repository on GitHub and push your project files. GitHub Desktop makes this straightforward without using the command line.
+  </Step>
+  <Step title="Enable GitHub Pages">
+    Go to your repository on GitHub, click **Settings**, scroll to **Pages** in the left sidebar, and set the source to your main branch and the `/root` folder.
+  </Step>
+  <Step title="Copy the published URL">
+    GitHub will display your published URL in the format `https://yourusername.github.io/your-repo-name/`. Share this link directly with stakeholders.
+  </Step>
+</Steps>
+
+<Warning>
+  Before sharing prototypes externally, remove any real user data or sensitive content used as placeholder text — email addresses, names, phone numbers, or company-specific data. Replace them with clearly fictional stand-ins like `alex@example.com` or "Acme Corp." Treat prototypes the same way you'd treat a design file shared outside your organization.
+</Warning>

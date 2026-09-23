@@ -1,0 +1,154 @@
+---
+title: "AI Coding Assistant Options for UX Prototyping"
+sidebarTitle: "AI Tools Overview"
+description: "Compare the top AI coding assistants for UX prototyping work — GitHub Copilot, Cursor, Claude, and ChatGPT — and choose the right one for your workflow."
+---
+
+Several AI coding assistants can help you generate prototype code from design descriptions. Each has different strengths — this page helps you choose the right one for where you are in your workflow, and explains how to connect these tools to your repository so they can understand your project's context.
+
+<Note>
+  You can use multiple tools together — many designers use Claude for complex component generation and Copilot for quick in-editor suggestions. They complement each other well.
+</Note>
+
+---
+
+## Tool Comparison
+
+<CardGroup cols={2}>
+  <Card title="GitHub Copilot" icon="github">
+    **What it is:** An AI assistant integrated directly into VS Code and JetBrains IDEs. It reads your open files and suggests code inline as you type — like autocomplete, but for full components and functions.
+
+    **Best for:** In-editor suggestions, completing repetitive patterns, and getting code hints without leaving your editor.
+
+    **Cost:** Free for verified students and open-source maintainers; $10/month for everyone else.
+
+    **How to access:** Install the GitHub Copilot extension from the VS Code marketplace and sign in with your GitHub account.
+  </Card>
+
+  <Card title="Cursor" icon="arrow-pointer">
+    **What it is:** An AI-first code editor built on VS Code's foundation. The AI isn't a plugin — it's baked into the editor. You get two modes: **Chat** (ask questions) and **Edit** (generate or modify code in place).
+
+    **Best for:** Beginners, full-file generation, iterating on components with back-and-forth conversation, and working with your full project as context.
+
+    **Cost:** Free tier available (limited monthly usage); Pro at $20/month for heavier use.
+
+    **How to access:** Download from [cursor.sh](https://cursor.sh). No configuration needed — open a project folder and start chatting.
+  </Card>
+
+  <Card title="Claude (Anthropic)" icon="message">
+    **What it is:** A browser-based and API-accessible AI assistant made by Anthropic. Claude is exceptionally good at following detailed, nuanced briefs — ideal when you have a clear design spec you want translated into code.
+
+    **Best for:** Generating full component files from written design briefs, working with long documents or multi-file context, and producing clean, well-structured code.
+
+    **Cost:** Free tier available; Pro at $20/month for higher usage limits and access to the most capable model (Claude 3.5 Sonnet).
+
+    **How to access:** Visit [claude.ai](https://claude.ai) in your browser, or use the API for more advanced integrations.
+  </Card>
+
+  <Card title="ChatGPT (OpenAI)" icon="robot">
+    **What it is:** OpenAI's versatile conversational AI assistant. Excellent at explaining code in plain English, iterating on designs through dialogue, and adapting to a wide range of requests.
+
+    **Best for:** Exploring ideas, getting explanations of unfamiliar code patterns, rapidly iterating through conversational back-and-forth, and general-purpose prototyping tasks.
+
+    **Cost:** Free tier available; Plus at $20/month for faster responses and access to GPT-4o.
+
+    **How to access:** Visit [chat.openai.com](https://chat.openai.com) in your browser, or use the API.
+  </Card>
+</CardGroup>
+
+---
+
+## Quick Comparison Table
+
+| Tool | Best For | Cost | Access |
+|---|---|---|---|
+| GitHub Copilot | In-editor suggestions | Free (students) / $10/mo | VS Code extension |
+| Cursor | Beginners, full-file generation | Free tier / $20/mo | Standalone app |
+| Claude | Detailed briefs, full components | Free tier / $20/mo | Browser / API |
+| ChatGPT | Explaining, iterating, versatility | Free tier / $20/mo | Browser / API |
+
+---
+
+## Recommended Starting Setup
+
+If you're new to AI prototyping and want the simplest possible starting point, begin with **Cursor + Claude**.
+
+<CardGroup cols={2}>
+  <Card title="Cursor" icon="arrow-pointer">
+    Your primary editor. Open your cloned repository in Cursor and use its built-in chat to ask questions, generate components, and iterate on code — all without switching windows. Everything you need is in one place.
+  </Card>
+  <Card title="Claude" icon="message">
+    Your drafting tool. When you need to generate a full, complex component from a detailed design brief, write the brief in Claude first. Paste in reference files for context, get a polished first draft, then bring it into Cursor to refine.
+  </Card>
+</CardGroup>
+
+This combination works well because Cursor gives you a tight edit loop inside your real project files, while Claude excels at processing detailed written briefs and producing structured, well-commented output. As you grow more comfortable, you can add GitHub Copilot for inline suggestions or ChatGPT for quick explanations.
+
+---
+
+## Connecting Tools to Your Repository
+
+AI tools generate better code when they understand your project's context — your component patterns, naming conventions, and design system. Here's how to give each tool that context.
+
+### Cursor
+
+Open your repository folder directly in Cursor (**File → Open Folder…**). Cursor automatically indexes all files in the folder, so when you chat with it, you can reference specific files using `@filename`:
+
+```
+@Button.jsx Refactor this component to accept a `variant` prop with values "primary" and "secondary"
+```
+
+Use `⌘L` to open the Chat panel, or press `⌘K` directly in a file to trigger an inline edit at your cursor position.
+
+### Claude
+
+Claude doesn't connect to your filesystem directly, but you can paste file contents into the conversation to give it context. For multi-file context, paste each file with a clear label:
+
+```
+Here is my design system's Button component:
+
+[paste Button.jsx contents]
+
+Here is my existing LoginForm component:
+
+[paste LoginForm.jsx contents]
+
+Please generate a new SignupForm component that follows the same patterns.
+```
+
+For ongoing work, start a new Claude conversation per component or feature so the context stays focused.
+
+### GitHub Copilot
+
+Copilot reads the currently open file and other files in your editor's tabs to infer context. To help it suggest code that matches your patterns:
+
+1. Keep a relevant reference component open in a nearby tab.
+2. Add a comment at the top of a new file describing what it should do — Copilot will use this as a prompt.
+
+```jsx
+// A responsive card component for the dashboard.
+// Uses the design system's spacing and colour tokens.
+// Props: title (string), description (string), onClick (function)
+```
+
+### ChatGPT
+
+Like Claude, ChatGPT works best when you paste in context. Use the file upload feature (available on the Plus plan) to attach component files directly, or paste code blocks into the conversation.
+
+<Tip>
+  Keep a `prompts/` folder in your repository to save effective prompts for reuse. When you find a prompt that generates great output — for a card component, a form layout, a navigation pattern — save it as a `.md` file. Over time, this becomes a powerful prompt library that accelerates every new prototype.
+
+  ```
+  your-repo/
+  └── prompts/
+      ├── card-component.md
+      ├── form-layout.md
+      └── navigation-pattern.md
+  ```
+</Tip>
+
+---
+
+## What's Next?
+
+With your tools chosen and connected, you're ready to write your first AI prompt for a real UI component.

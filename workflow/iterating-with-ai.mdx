@@ -1,0 +1,144 @@
+---
+title: "Iterate and Refine Prototypes with AI Feedback"
+sidebarTitle: "Iterating with AI"
+description: "Learn how to use AI as an iterative design partner — making targeted changes, exploring variations, and refining prototypes through conversation."
+---
+
+AI prototyping isn't a one-shot process — it's a conversation. Rarely does the first generation match your design vision exactly, and that's expected. The real power of AI prototyping is how quickly you can cycle through refinements: a change that would take a developer an hour to make can take you thirty seconds to prompt. This page covers how to iterate effectively with your AI assistant to refine prototypes until they match your design vision.
+
+---
+
+## The Iteration Loop
+
+Every effective AI prototyping session follows the same cycle. Once you internalize this loop, iteration becomes second nature.
+
+<Note>
+  **The Iteration Loop**
+
+  ① **Generate** — Submit your prompt and get the initial component output.
+
+  ② **Preview** — Open the component in CodeSandbox, StackBlitz, or your local server and view it in the browser.
+
+  ③ **Identify changes** — Compare what you see against your wireframe or design intent. Note specific things to change: visual details, missing elements, wrong behavior.
+
+  ④ **Prompt for changes** — Write a focused follow-up prompt describing exactly what to adjust. Paste the current code so the AI has full context.
+
+  ⑤ **Repeat** — Preview the updated output and continue until the prototype matches your vision.
+</Note>
+
+Each pass through the loop should be fast — under five minutes in most cases. If a single iteration is taking much longer, your prompt is probably asking for too many changes at once. Break it into two or three smaller prompts instead.
+
+---
+
+## Types of Iteration Prompts
+
+Not all changes are the same. Here are the three categories you'll encounter most often, with real prompt examples for each.
+
+### 1. Visual Adjustments
+
+Use these when the component renders correctly but the styling doesn't match your design.
+
+<CodeGroup>
+```text Soften shadows and corners
+Make the card shadow softer and increase the border-radius to 12px.
+```
+
+```text Update typography
+Change the heading font size to 24px and set the font weight to 600.
+Use the color #1a1a2e for all body text.
+```
+
+```text Fix spacing
+Increase the padding inside the card to 32px on all sides.
+Add 16px of vertical space between the input fields.
+```
+</CodeGroup>
+
+### 2. Structural Changes
+
+Use these when you need to add, remove, or rearrange elements in the layout.
+
+<CodeGroup>
+```text Add a sidebar
+Add a navigation sidebar to the left side, 240px wide.
+It should contain: a logo area at the top, five nav items with icons, and a user avatar at the bottom.
+Keep the existing main content area to the right of the sidebar.
+```
+
+```text Rearrange elements
+Move the "Forgot password?" link so it appears to the right of the password field label, not below the button.
+```
+
+```text Add a new section
+Add a "Recent activity" section below the stats cards.
+It should display a list of five rows, each with an icon, a short text label, and a timestamp on the right.
+```
+</CodeGroup>
+
+### 3. Behavior and Interaction
+
+Use these when you want to add or change what happens when users interact with the component.
+
+<CodeGroup>
+```text Add hover animation
+When the user hovers the card, show a subtle scale animation — scale up to 1.02 over 150ms with ease-in-out easing.
+Return to normal size when the hover ends.
+```
+
+```text Add a loading state
+When the form is submitted, replace the "Sign In" button text with a spinning loading indicator.
+Disable all form inputs while loading is active.
+```
+
+```text Add a focus effect
+When an input field receives focus, show a 2px border in the color #ef7025 and a soft glow effect using a matching box-shadow.
+```
+</CodeGroup>
+
+---
+
+## Keeping Context
+
+The most common reason iteration prompts fail is lost context. If you start a new message without including the current code, the AI is working from memory — and it will drift from what you've built.
+
+**The rule:** Paste the current component code at the start of every follow-up message. Wrap it clearly so the AI knows what it's looking at:
+
+<CodeGroup>
+```text Iteration Prompt Template
+Here is my current login component:
+[paste component code]
+
+Please make these changes:
+1. Move the logo above the card, not inside it
+2. Change the button color to #ef7025
+3. Add a loading spinner state when the form is submitting
+```
+</CodeGroup>
+
+This pattern — **current code first, then numbered changes** — produces reliable results every time. The numbered list tells the AI exactly how many things to change and makes it easy for you to verify each one was addressed.
+
+<Tip>
+  In Cursor, you can use `@filename` to reference your component file directly in the chat prompt, so you don't need to manually paste the code each time. Type `@LoginCard.jsx` at the start of your message and Cursor will include the file contents automatically.
+</Tip>
+
+**What to avoid:**
+- Starting a new chat conversation for every iteration (context is lost)
+- Sending multiple separate messages in quick succession (the AI may process them in an unexpected order)
+- Asking for changes without referencing the current code (the AI may rewrite from scratch)
+
+---
+
+## Saving Iterations
+
+As your prototype evolves, you'll want a way to go back to an earlier version. The simplest approach is to commit each significant iteration to Git with a descriptive message.
+
+A good commit cadence for prototyping:
+- After the **initial generation** — commit as `feat: initial LoginCard component`
+- After each **significant change** — commit as `feat: add loading state to LoginCard` or `fix: update card spacing and shadow`
+- Before **exploring a risky variation** — commit first so you can revert if it doesn't work out
+
+<Tip>
+  Use branch names like `prototype/login-v2` or `prototype/dashboard-sidebar` to keep variations organized without overwriting previous versions. You can switch between branches to show stakeholders two different design directions side by side.
+</Tip>
+
+Even if you're not familiar with Git, tools like [GitHub Desktop](https://desktop.github.com) give you a visual interface for committing changes — no command line required. Each commit becomes a snapshot in your design history that you can jump back to at any point.

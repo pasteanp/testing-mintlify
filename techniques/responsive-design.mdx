@@ -1,0 +1,146 @@
+---
+title: "Responsive Design in AI-Generated Prototypes"
+sidebarTitle: "Responsive Design"
+description: "Ensure your AI-generated prototypes look great on all screen sizes with these responsive design prompting strategies and testing techniques."
+---
+
+AI tools can generate responsive prototypes, but only if you ask for it explicitly. Left to their own devices, most AI-generated layouts are desktop-only — and stakeholders testing on a phone will immediately notice. This page covers how to prompt for responsive layouts and how to test them systematically once you have generated code.
+
+## Always Ask for Responsive
+
+Responsive behavior does not happen automatically. Every layout-related prompt should include an explicit responsiveness section that describes how the component should adapt at each breakpoint. The more specific you are, the less you'll need to fix afterward.
+
+<CodeGroup>
+  ```text Responsive Breakpoints Prompt
+  Make this component fully responsive:
+  - Mobile (< 768px): single column, full-width cards, stacked navigation links
+  - Tablet (768px–1024px): two-column grid, sidebar hidden by default
+  - Desktop (> 1024px): three-column grid with persistent sidebar
+  Use Tailwind responsive prefixes (sm:, md:, lg:) throughout.
+  Do not use custom media queries — rely entirely on Tailwind's responsive utilities.
+  ```
+
+  ```text Responsive Typography Prompt
+  Apply responsive typography throughout the component:
+  - Headings: text-2xl on mobile, text-3xl on tablet, text-4xl on desktop
+  - Body: text-sm on mobile, text-base on tablet and desktop
+  - Line height: leading-snug on mobile, leading-relaxed on tablet and desktop
+  - Paragraph max-width: full-width on mobile, max-w-prose on desktop
+  ```
+</CodeGroup>
+
+## Mobile-First vs. Desktop-First
+
+There are two schools of thought on which screen size to design for first — and your choice affects how you write both your prompts and the generated CSS.
+
+**Mobile-first** means you start with the smallest screen and add complexity as the viewport grows. In Tailwind, this means unprefixed utilities apply to all screens, and `sm:`, `md:`, `lg:` add overrides for larger screens.
+
+**Desktop-first** means you start with the full layout and progressively simplify for smaller screens. This requires `max-width` media queries and feels more natural if you're used to traditional web design.
+
+**Recommendation: use mobile-first for most prototypes.** It produces leaner code, aligns with how browsers interpret Tailwind's responsive prefixes, and forces you to think about the essential experience before adding complexity. Tell the AI explicitly which approach you want:
+
+```text Mobile-First Declaration
+Build this component mobile-first:
+- Start with the mobile layout as the base (no responsive prefix)
+- Add tablet enhancements with md: prefix
+- Add desktop enhancements with lg: prefix
+Do not use max-width breakpoints — only min-width (mobile-first) breakpoints.
+```
+
+## Testing Responsiveness
+
+Once you have generated a responsive component, test it across key breakpoints before calling it done. Browser DevTools makes this fast — no real devices required for an initial check.
+
+<Steps>
+  <Step title="Open Chrome DevTools">
+    Right-click anywhere on your prototype in Chrome and select **Inspect**, or press `Cmd+Option+I` (Mac) / `Ctrl+Shift+I` (Windows). DevTools opens in a side or bottom panel.
+  </Step>
+  <Step title="Toggle the Device Toolbar">
+    Click the **Toggle Device Toolbar** icon (the phone/tablet icon) in the top-left of the DevTools panel, or press `Cmd+Shift+M` (Mac) / `Ctrl+Shift+M` (Windows). Your prototype now displays inside a resizable device frame.
+  </Step>
+  <Step title="Test Key Breakpoints">
+    Manually resize the viewport or type specific widths into the dimensions field at the top. Test these four breakpoints:
+
+    | Breakpoint | Width | What to check |
+    |------------|-------|---------------|
+    | Small mobile | 320px | Text readable, nothing cut off |
+    | Standard mobile | 375px | Most common phone width |
+    | Tablet | 768px | Layout transition, navigation |
+    | Desktop | 1024px | Full layout, sidebar behavior |
+    | Wide desktop | 1440px | Max-width container centering |
+  </Step>
+  <Step title="Note the Issues">
+    As you test, write down specific problems with precise measurements. "The card grid breaks at 768px" is more useful than "it looks weird on tablet." Note the exact viewport width where each issue appears.
+  </Step>
+  <Step title="Prompt AI with Specific Fixes">
+    Return to your AI tool with targeted fix prompts for each issue. Reference the exact breakpoint and describe the desired behavior:
+
+    ```text Responsive Fix Prompt
+    At 768px viewport width, the navigation menu overflows horizontally.
+    Fix this so that at md: breakpoint (768px), the navigation links collapse into a hamburger menu icon.
+    The menu should open as a full-width dropdown below the header when the icon is tapped.
+    ```
+  </Step>
+</Steps>
+
+## Common Responsive Issues
+
+These are the issues that appear most often in AI-generated responsive layouts. Each accordion below describes the problem and includes a prompt you can use to fix it.
+
+<Accordion title="Text overflow on small screens">
+  Long words, URLs, or unbroken strings cause text to overflow its container on narrow viewports, creating a horizontal scrollbar or broken layout.
+
+  **Fix prompt:**
+  ```text Text Overflow Fix
+  Fix text overflow issues on mobile:
+  - Add overflow-wrap: break-word (or Tailwind's break-words class) to all text containers
+  - Apply truncate with a tooltip for single-line labels that should not wrap
+  - For the page title, switch to a smaller font size below md: breakpoint (text-xl on mobile, text-3xl on desktop)
+  - Ensure no element has a fixed pixel width wider than 320px without overflow handling
+  ```
+</Accordion>
+
+<Accordion title="Images not scaling">
+  Fixed-width or fixed-height images break out of their containers on small screens or stretch awkwardly on large ones.
+
+  **Fix prompt:**
+  ```text Image Scaling Fix
+  Fix image scaling throughout the component:
+  - Add w-full h-auto to all <img> elements so they scale with their container
+  - Use aspect-ratio utilities (aspect-video, aspect-square) to maintain proportions
+  - For the hero image, switch from a fixed height to a responsive aspect ratio: aspect-[16/9] on mobile, aspect-[21/9] on desktop
+  - Wrap all images in a relative container with overflow-hidden to prevent breakout
+  ```
+</Accordion>
+
+<Accordion title="Navigation collapsing to hamburger menu">
+  Horizontal navigation that works on desktop needs to become a collapsible menu on mobile — but this transition often requires explicit instructions to generate correctly.
+
+  **Fix prompt:**
+  ```text Hamburger Menu Fix
+  Convert the desktop navigation to a responsive hamburger menu:
+  - On desktop (lg:): show all navigation links in a horizontal row, hide the hamburger icon
+  - On mobile/tablet (below lg:): hide the navigation links, show a hamburger icon button
+  - When the hamburger icon is clicked, toggle a mobile menu that slides down below the header
+  - The mobile menu should show links stacked vertically, full-width, with padding
+  - Add a close (X) icon to dismiss the menu
+  - Use React useState to manage the open/closed state of the menu
+  ```
+</Accordion>
+
+<Accordion title="Tables overflowing their container">
+  Data tables are notoriously difficult to make responsive. They frequently overflow on mobile, creating a broken horizontal scroll or truncated columns.
+
+  **Fix prompt:**
+  ```text Table Responsive Fix
+  Fix the data table's responsive behavior:
+  - Wrap the table in a div with overflow-x-auto so it scrolls horizontally on mobile rather than breaking the layout
+  - Below md: breakpoint, switch from a table layout to a card-per-row layout where each row becomes a stacked card
+  - In the card layout, show the column header as a small label above each value
+  - Hide less important columns (e.g., ID, created date) on mobile using hidden md:table-cell
+  ```
+</Accordion>
+
+<Tip>
+  Include "mobile-first" and your breakpoint system in every layout-related prompt to make responsiveness the default, not an afterthought. Create a reusable "responsive requirements" block in your `prompts/` folder and paste it into every new layout prompt automatically.
+</Tip>

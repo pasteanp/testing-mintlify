@@ -1,0 +1,162 @@
+---
+title: "Frequently Asked Questions About AI Prototyping"
+sidebarTitle: "Common Questions"
+description: "Answers to the most common questions UX designers have about AI prototyping — tools, workflow, quality, handoff, and getting started."
+---
+
+Here are answers to the questions we hear most from UX designers exploring AI prototyping for the first time.
+
+<AccordionGroup>
+
+  <Accordion title="Do I need to know how to code?">
+    Not really — but a little familiarity goes a long way. You don't need to write code from scratch or understand every line the AI produces. What you *do* need is the ability to:
+
+    - **Read output critically** — spot when something looks structurally wrong, even if you can't fix it yourself.
+    - **Describe interfaces precisely** — the clearer your prompt, the better the result. Think of it like writing a detailed design brief.
+    - **Paste error messages** — when something breaks, you copy the error and hand it back to the AI to fix.
+
+    Most UX designers pick up the basics within a few sessions. The AI handles the syntax; your job is to direct it like a collaborator who never gets tired.
+  </Accordion>
+
+  <Accordion title="Which AI tool should I start with?">
+    We recommend starting with **Cursor** (the AI-powered code editor) paired with **Claude** as the underlying model. Here's why this combination works so well for designers:
+
+    - **Cursor** gives you a full coding environment with an AI chat panel built right in — you can highlight any piece of code and ask questions about it inline.
+    - **Claude** tends to produce clean, well-structured UI code and follows detailed instructions reliably, making it well-suited to design-driven prompting.
+    - Together, they let you iterate quickly: describe a component, generate it, tweak it in conversation, and preview it — all in one place.
+
+    <Tip>
+      If you're already using **GitHub Copilot** through a work account, that's a perfectly valid starting point too. The prompting principles you'll learn apply across tools.
+    </Tip>
+
+    Once you're comfortable, you can explore other tools like **v0 by Vercel** (great for quick React component generation) or **Bolt.new** (excellent for full-page scaffolding).
+  </Accordion>
+
+  <Accordion title="How accurate is AI-generated UI?">
+    Honestly? The structure is usually solid — the AI is good at producing correct HTML hierarchy, sensible component breakdowns, and reasonable spacing patterns. Where it falls short is **visual polish and brand fidelity**.
+
+    Expect to iterate. A first-pass generation might get the layout right but use generic placeholder styles, slightly off spacing, or colors that don't match your design system. That's normal. Think of the first output as a rough wireframe in code — a starting point, not a finished screen.
+
+    The more specific your prompt (exact colors, spacing values, component names from your design system), the closer the first pass will be to what you need.
+  </Accordion>
+
+  <Accordion title="Can I use AI prototypes in real products?">
+    **Not directly** — and that's an important distinction. AI prototypes are excellent for:
+
+    - Communicating ideas to stakeholders
+    - Testing interactions and flows in a browser
+    - Exploring layout options quickly
+    - Giving developers a clear reference point
+
+    Before any AI-generated code goes into a real product, it needs to be reviewed and rewritten (or at minimum thoroughly audited) by a developer. AI-generated code can contain accessibility gaps, performance issues, security concerns, and patterns that don't fit your team's codebase.
+
+    <Warning>
+      Never ship AI-generated prototype code to production without a full developer review. Prototyping and production engineering have very different quality bars.
+    </Warning>
+  </Accordion>
+
+  <Accordion title="How do I handle my design system?">
+    Your design system is one of the most valuable things you can feed into your prompts. The more context the AI has about your established patterns, the more consistent the output will be.
+
+    Practical approaches:
+
+    - **Include your token values directly** — paste your color hex codes, spacing scale, and typography sizes into the prompt. For example: *"Use these brand colors: primary #ef7025, neutral-900 #1a1a1a, background #f9f9f9."*
+    - **Reference component names** — if your system has a `CardSurface` component or a `ButtonPrimary` style, mention them by name so the AI can mirror that language.
+    - **Paste your style guide sections** — if you have a written style guide (even a short one), including the relevant section in your prompt gives the AI excellent guidance.
+    - **Use a system prompt** — in tools like Cursor or Claude, you can set a persistent system instruction that includes your design system rules, so you don't have to repeat them every session.
+
+    <Note>
+      You won't get perfect design system compliance from AI, but giving it your tokens and naming conventions gets you dramatically closer than a generic prompt.
+    </Note>
+  </Accordion>
+
+  <Accordion title="Is my prompt and code data private?">
+    It depends on the tool and how it's configured — and this is worth checking before you prototype anything sensitive.
+
+    - **Claude (via Anthropic's API or Claude.ai)** — by default, Anthropic says it doesn't train on API conversations. On Claude.ai, you can turn off conversation history in your settings. Check [Anthropic's privacy policy](https://www.anthropic.com/privacy) for the current terms.
+    - **GitHub Copilot** — if you're using it through a personal account, your snippets may be used to improve the model. Enterprise accounts typically have data privacy controls that disable this. Check your organization's Copilot settings.
+    - **Cursor** — offers a Privacy Mode that prevents your code from being stored or used for training. Enable it in **Cursor Settings → Privacy**.
+
+    <Warning>
+      Never paste proprietary client data, real user data, or confidential business logic into an AI tool without first confirming your organization's data handling policy.
+    </Warning>
+
+    When in doubt, use synthetic or anonymized content in your prototypes.
+  </Accordion>
+
+  <Accordion title="How long does it take to prototype a screen?">
+    It varies by complexity, but here are realistic benchmarks once you're past the initial learning curve:
+
+    | Prototype Type | Estimated Time |
+    |---|---|
+    | Simple static screen (e.g. a settings page) | 15–30 minutes |
+    | Interactive form with validation | 45–90 minutes |
+    | Multi-step flow (e.g. onboarding) | 2–4 hours |
+    | Dashboard with data visualizations | 3–5 hours |
+    | Full feature prototype (5+ screens) | 1–2 days |
+
+    Your first few sessions will take longer as you learn how to prompt effectively and navigate the environment. Most designers find they're significantly faster by their third or fourth prototype.
+  </Accordion>
+
+  <Accordion title="Can I export AI prototypes to Figma or other design tools?">
+    Not directly — there's no one-click export from a code prototype into Figma layers. But there are practical workarounds:
+
+    - **Screenshot to design** — take a screenshot of your rendered prototype and place it in Figma as a reference. Tools like **Figma's "Import image"** or plugins like **Magician** can help you build around it.
+    - **Manual recreation** — once you've validated a layout in code, recreate it as proper Figma components. The code prototype serves as your spec.
+    - **Anima or Locofy** — these tools work in the opposite direction (Figma → code), but familiarity with them helps you understand the round-trip.
+    - **HTML to Figma** (browser plugin) — can sometimes import simple rendered HTML back into Figma with varying reliability.
+
+    Think of code prototypes and Figma files as **different artifacts for different audiences**, rather than two formats of the same thing.
+  </Accordion>
+
+  <Accordion title="What happens when the AI produces wrong output?">
+    This is totally normal — treat it as part of the process, not a failure. When the output isn't what you wanted:
+
+    1. **Don't start over** — iterate on what you have. It's almost always faster to refine than to restart.
+    2. **Be more specific** — identify exactly what's wrong and describe the correct behavior explicitly.
+    3. **Show, don't just tell** — if the layout is wrong, describe it structurally: *"The sidebar should be a fixed 240px column on the left, and the main content should fill the remaining width."*
+    4. **Break it down** — if you asked for a lot at once, split the request into smaller steps.
+
+    See our [Troubleshooting guide](/faq/troubleshooting) for specific fixes to the most common problems.
+  </Accordion>
+
+  <Accordion title="How do I hand off AI prototypes to developers?">
+    This is one of the biggest advantages of code prototypes over static mockups — the handoff is built in. Here's how to do it cleanly:
+
+    - **Share the GitHub repository** — your code already lives in a shareable format. Give the developer access to the repo and they can explore the code directly.
+    - **Write a brief README** — add a short explanation of what the prototype demonstrates, how to run it locally, and any design decisions worth calling out.
+    - **Use it as a reference, not a spec** — encourage developers to use your prototype as a behavioral and visual reference, but rebuild components properly within your production stack.
+    - **Walk through it together** — a short screen-share session where you demo the prototype and answer questions is often more valuable than any written documentation.
+
+    <Tip>
+      Even if the developer rewrites everything from scratch, a working prototype gives them an unambiguous picture of what you're building. That alone saves hours of back-and-forth.
+    </Tip>
+  </Accordion>
+
+  <Accordion title="Can multiple designers collaborate on a prototype?">
+    Yes — and GitHub makes this work well once you understand the basics. Here's the approach:
+
+    - **Fork or clone the shared repo** — each designer works in their own copy or on a dedicated branch.
+    - **Use branches** — create a new branch for each feature or screen you're working on (e.g. `feature/checkout-flow`). This keeps work isolated and easy to review.
+    - **Open pull requests** — when your work is ready, open a pull request so the team can review the changes before merging.
+    - **Use GitHub Codespaces or CodeSandbox** — these browser-based environments mean everyone works in the same setup without local configuration headaches.
+
+    <Note>
+      You don't need to fully understand git to collaborate. Tools like **GitHub Desktop** give you a visual interface for branching, committing, and merging without touching the command line.
+    </Note>
+  </Accordion>
+
+  <Accordion title="What frameworks does the AI generate?">
+    By default, most AI tools lean toward **React** — it's the most common UI framework in the training data, and it works well for component-based prototyping. For styling, the AI will typically produce either plain CSS or **Tailwind CSS** (specify which you want in your prompt).
+
+    If you need something different, just ask explicitly:
+
+    - **"Generate this using Vue 3 and Composition API"**
+    - **"Use plain HTML and CSS — no framework"**
+    - **"Build this as a Next.js page"**
+    - **"Use Angular with TypeScript"**
+
+    For most UX prototyping purposes, **React + Tailwind CSS** is the sweet spot: fast to iterate, widely understood by developers, and well-supported by AI tools.
+  </Accordion>
+
+</AccordionGroup>

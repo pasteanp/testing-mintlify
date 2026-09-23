@@ -1,0 +1,107 @@
+---
+title: "Accessibility in AI-Generated Prototypes"
+sidebarTitle: "Accessibility"
+description: "Build accessible prototypes from the start — prompt for ARIA labels, keyboard navigation, color contrast, and semantic HTML in your AI-generated UI."
+---
+
+AI tools won't automatically generate accessible code — but they will if you ask. Accessibility is not a post-launch concern or a developer's responsibility alone: it starts in the prototype. This page covers how to prompt for accessibility and how to check your output against WCAG guidelines before sharing with stakeholders.
+
+## The Accessibility Prompt Addition
+
+The most effective habit you can develop is appending a standard accessibility block to every component prompt. Copy the block below and paste it at the end of your prompts whenever you're generating interactive UI. Over time, this becomes automatic — and your prototypes will be demonstrably better for it.
+
+```text Accessibility Requirements Block
+Accessibility requirements:
+- All interactive elements must have descriptive aria-label attributes
+- Use semantic HTML elements (button for buttons, nav for navigation, main for main content, etc.)
+- Ensure keyboard navigation works with Tab and Enter/Space for all interactive elements
+- Color contrast must meet WCAG AA (minimum 4.5:1 ratio for normal text, 3:1 for large text and UI components)
+- Add role attributes where semantic HTML elements aren't sufficient (e.g., role="alert" for error messages)
+- All form inputs must have associated <label> elements — not just placeholder text
+- Focus styles must be visible: do not remove outlines without providing a custom focus indicator
+- Images must have descriptive alt text; decorative images should have alt=""
+```
+
+Add this block to your prompt templates so you never have to remember to include it manually.
+
+## Key Accessibility Checks
+
+After generating a component, run through this checklist before sharing it. Each item maps to a real WCAG success criterion.
+
+- ✅ All images have `alt` text (decorative images have `alt=""`)
+- ✅ All interactive elements (buttons, links, inputs) are reachable and operable via keyboard alone
+- ✅ Error messages use `role="alert"` or `aria-live="assertive"` so screen readers announce them immediately
+- ✅ Color is not the only way to convey information (e.g., error states use an icon + text, not just red color)
+- ✅ All form inputs have an associated `<label>` element with a matching `for`/`id` pair
+- ✅ Navigation landmarks are present: `<header>`, `<nav>`, `<main>`, `<footer>`
+- ✅ Interactive components (modals, dropdowns, tabs) trap focus correctly and return focus when closed
+- ✅ The page has a logical heading hierarchy (`h1` → `h2` → `h3`, no skipped levels)
+
+<Warning>
+  Accessibility in prototypes matters more than you might think. Stakeholders — including QA teams, legal reviewers, and users with disabilities — may test your prototypes with assistive technologies like screen readers. Inaccessible prototypes create the wrong impression and, worse, can establish bad patterns that carry directly into production code.
+</Warning>
+
+## Checking Color Contrast
+
+Color contrast is one of the most common accessibility failures in AI-generated UI — especially when AI chooses placeholder brand colors or uses light gray text that looks fine on a calibrated monitor but fails WCAG AA.
+
+**Check your prototype's colors with these tools:**
+
+**WebAIM Contrast Checker** ([webaim.org/resources/contrastchecker](https://webaim.org/resources/contrastchecker))
+Enter your foreground and background color hex values. The tool instantly tells you whether you pass WCAG AA (required) and WCAG AAA (enhanced). Use it whenever you introduce a new color combination.
+
+**Chrome DevTools Accessibility Panel**
+1. Open DevTools and select the **Elements** tab
+2. Click on any text element in your prototype
+3. In the Styles panel, click the color swatch next to the text's `color` property
+4. The color picker shows a **Contrast Ratio** score and AA/AAA pass/fail indicators automatically
+
+**When your contrast fails**, prompt the AI with a specific fix:
+
+```text Contrast Fix Prompt
+The muted label text currently uses #9ca3af (gray-400) on a white background — this fails WCAG AA.
+Replace all instances of muted/secondary text with #6b7280 (gray-500), which passes 4.6:1 contrast on white.
+Update text-gray-400 to text-gray-500 throughout the component.
+```
+
+## Prompting for Specific Accessibility Issues
+
+Beyond the standard accessibility block, you'll sometimes need to fix specific accessibility gaps in generated components. Here are targeted prompts for the most common issues:
+
+**Linking form hints to their inputs:**
+```text aria-describedby Prompt
+Add aria-describedby to the password input field, pointing to the hint text element below it.
+Give the hint text an id of "password-requirements".
+This ensures screen readers announce the requirements when the password field receives focus.
+```
+
+**Making error messages announced immediately:**
+```text role="alert" Prompt
+Ensure the error message that appears after form submission uses role="alert" so screen readers announce it without the user needing to navigate to it.
+Also add aria-invalid="true" to any form field that has a validation error, and aria-describedby pointing to the specific error message for that field.
+```
+
+**Making icon buttons understandable:**
+```text Icon Button Accessibility Prompt
+The icon-only buttons (edit, delete, share) have no visible text.
+Add a descriptive aria-label to each button that explains its action in context:
+- Edit button: aria-label="Edit project name"
+- Delete button: aria-label="Delete project"
+- Share button: aria-label="Share project with team"
+Do not use generic labels like "icon" or "button".
+```
+
+**Making modals and dialogs accessible:**
+```text Modal Accessibility Prompt
+Make the confirmation dialog fully accessible:
+- Add role="dialog" and aria-modal="true" to the dialog container
+- Add aria-labelledby pointing to the dialog's heading element
+- Add aria-describedby pointing to the dialog's description text
+- Trap focus inside the dialog when it's open (Tab should cycle through focusable elements within the dialog only)
+- Return focus to the triggering button when the dialog closes
+- Close the dialog when Escape is pressed
+```
+
+<Tip>
+  Include your accessibility requirements block in your prompt template file as a standard section — the same way you include technology stack and design constraints. Accessibility should be built in from the first generated component, not retrofitted after the prototype is complete.
+</Tip>

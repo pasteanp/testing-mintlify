@@ -1,0 +1,142 @@
+---
+title: "GitHub Basics for UX Designers"
+sidebarTitle: "GitHub Basics"
+description: "Learn the essential GitHub concepts UX designers need for AI prototyping — repositories, branches, commits, and pull requests explained simply."
+---
+
+GitHub is where your prototypes live. This page explains the core GitHub concepts you need — without the developer jargon. You don't need to understand everything about Git to prototype effectively; you just need a handful of commands and a mental model that makes sense.
+
+<Tip>
+  Use [GitHub Desktop](https://desktop.github.com) if you prefer a visual interface over the command line. It gives you the same power as terminal commands through a clean, clickable UI — great if you're just getting started.
+</Tip>
+
+---
+
+## Key Concepts
+
+Expand each term to see a plain-English explanation.
+
+<AccordionGroup>
+  <Accordion title="Repository">
+    A **repository** (or "repo") is your project folder — but stored in the cloud on GitHub. It contains all your prototype files, a full history of every change ever made, and tools for collaborating with others.
+
+    Think of it like a shared Google Drive folder that also tracks every version of every file automatically. You can always roll back to an earlier version if something breaks.
+  </Accordion>
+
+  <Accordion title="Branch">
+    A **branch** is a safe, isolated copy of the project where you can experiment freely. Changes you make on a branch don't affect the main project until you deliberately merge them in.
+
+    Think of it like duplicating a design file in Figma before making big changes — the original is safe, and you can throw away the copy if the experiment doesn't work out.
+  </Accordion>
+
+  <Accordion title="Commit">
+    A **commit** is a saved snapshot of your work at a specific moment in time. Every commit has a short message describing what changed — this is your project's history log.
+
+    Think of commits like save points in a video game. You can always return to a previous commit if a later change causes problems. The more frequently you commit, the finer-grained your safety net.
+  </Accordion>
+
+  <Accordion title="Pull Request">
+    A **pull request** (or "PR") is a formal proposal to merge your branch's changes into the main project. It's the standard handoff mechanism between designers and developers.
+
+    Think of it like submitting a design for review — you're saying "here's what I built, please review it and merge it in when you're happy." Pull requests are also where code review conversations happen.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Your First Workflow
+
+Follow these steps every time you start work on a new prototype or feature. This pattern — branch, change, commit, push — is the core loop of working with GitHub.
+
+<Steps>
+
+  ### Clone the Repository to Your Computer
+
+  If you haven't already cloned the repository, do that first. This downloads a full copy to your machine so you can edit files locally.
+
+  ```bash
+  git clone https://github.com/your-org/your-repo.git
+  cd your-repo
+  ```
+
+  You only need to clone once. After that, you work inside the folder that was created. The `cd` command moves your terminal into that folder.
+
+  ### Create a New Branch for Your Prototype
+
+  Never work directly on the `main` branch. Instead, create a new branch with a name that describes what you're building. This keeps your experiments isolated and your commit history clean.
+
+  ```bash
+  # Create and switch to a new branch
+  git checkout -b prototype/login-screen
+  ```
+
+  The `-b` flag creates the branch and switches you to it in one step. You're now working in your own safe space — anything you change here won't touch `main`.
+
+  <Tip>
+    See the [Naming Conventions](#naming-conventions) section below for guidance on how to name branches clearly and consistently.
+  </Tip>
+
+  ### Make Changes and Commit Them
+
+  Open the project in your editor, make your changes (with help from your AI assistant), then save your work as a commit. It's good practice to commit in small, logical chunks rather than saving everything at once.
+
+  ```bash
+  # Stage all changed files for commit
+  git add .
+
+  # Save a snapshot with a descriptive message
+  git commit -m "Add AI-generated login screen prototype"
+  ```
+
+  The `git add .` command tells Git which files to include in the snapshot (`.` means "all changed files"). The commit message should describe *what* you added or changed in plain language — your future self will thank you.
+
+  ### Push Your Branch Back to GitHub
+
+  Pushing uploads your local branch and its commits to GitHub, where it's backed up and visible to your team. Do this at the end of every work session.
+
+  ```bash
+  # Push your branch to GitHub
+  git push origin prototype/login-screen
+  ```
+
+  After pushing, you can open GitHub in your browser and see your branch listed under the repository. From there, you can open a **Pull Request** to share your prototype with developers or get feedback.
+
+</Steps>
+
+---
+
+## Naming Conventions
+
+Consistent naming makes it much easier to navigate a shared repository and understand what each branch or commit contains at a glance.
+
+### Branch Names
+
+Use the format `prototype/feature-name` for prototyping work. Keep names lowercase and use hyphens instead of spaces.
+
+| ✅ Good | ❌ Avoid |
+|---|---|
+| `prototype/login-screen` | `my-branch` |
+| `prototype/onboarding-flow` | `test123` |
+| `prototype/dashboard-v2` | `LoginScreen` |
+| `experiment/new-nav-pattern` | `branch-2` |
+
+### Commit Messages
+
+Write commit messages that complete the sentence *"This commit will…"*. Use a consistent prefix to make the history scannable.
+
+| Prefix | When to use | Example |
+|---|---|---|
+| `Add:` | New files or features | `Add: AI-generated onboarding flow` |
+| `Update:` | Changes to existing work | `Update: login screen with revised copy` |
+| `Fix:` | Fixing something broken | `Fix: broken layout on mobile breakpoint` |
+| `Remove:` | Deleting files or features | `Remove: deprecated splash screen` |
+
+<Note>
+  Short, clear commit messages matter most when you're working with developers. They'll be reading your commit history to understand what you built and why — treat it like a changelog.
+</Note>
+
+---
+
+## What's Next?
+
+Now that you know the GitHub basics, explore the AI tools available for prototyping and learn how to choose the right one for your workflow.

@@ -1,0 +1,171 @@
+---
+title: "Prototype a Mobile App UI with AI"
+sidebarTitle: "Mobile App"
+description: "Create a realistic mobile app prototype using AI — with native-feeling navigation, touch interactions, and mobile-optimized components."
+---
+
+Mobile prototypes have unique requirements: touch targets, bottom navigation, swipe interactions, and constrained screen real estate. This example shows how to AI-prototype a mobile app UI that feels native — complete with a phone frame wrapper, tab navigation, and touch-like interaction feedback that you can open on a real device.
+
+---
+
+## Mobile Prototype Setup
+
+The foundation of a convincing mobile prototype is a constrained viewport wrapper that simulates a phone screen. Build this first — every screen and component you generate will live inside it.
+
+The approach: build a React app constrained to a **375px viewport** (iPhone standard) wrapped in a decorative phone frame, centered on a desktop background. This lets testers experience the prototype on a laptop while feeling the mobile constraints.
+
+<CodeGroup>
+```text Mobile Frame Prompt
+Create a mobile app prototype wrapper component:
+- Max width 375px, min height 812px
+- Centered on desktop with a subtle phone-frame border
+- Safe area padding at top (44px) and bottom (34px) to simulate
+  notch/home indicator
+- Overflow hidden with scroll inside the frame
+```
+</CodeGroup>
+
+**What to expect:** A `<MobileFrame>` wrapper component with a `max-w-[375px]` container, a styled border that suggests a phone bezel, and inner padding that prevents content from touching the top and bottom edges. All subsequent screens render as children inside this frame.
+
+<Note>
+  The 375px width and 812px height correspond to the iPhone X/11/12 logical pixel dimensions — the most common baseline for mobile design. If your design brief targets Android first, adjust to 360×800px.
+</Note>
+
+---
+
+## Bottom Tab Navigation
+
+Bottom navigation is the primary navigation pattern for mobile apps. Build it as a persistent component that sits at the bottom of the frame and remains visible across all screens.
+
+<CodeGroup>
+```text Bottom Tab Navigation Prompt
+Create a bottom tab navigation bar for a mobile app using Tailwind CSS:
+- Fixed to the bottom of the mobile frame (position absolute, bottom 0)
+- Four tabs: Home, Explore, Notifications, Profile
+- Each tab has a small icon above a short text label
+- Active tab: icon and label in indigo (#6366f1), with a subtle indicator dot or
+  underline
+- Inactive tabs: gray (#9ca3af)
+- Tapping a tab updates the active state using useState
+- Height: 56px (plus the 34px safe area bottom padding from the frame)
+- White background with a top border divider
+```
+</CodeGroup>
+
+**What to expect:** A sticky nav bar with four clearly tappable tabs (minimum 44px touch target each). Clicking a tab updates `activeTab` state and highlights the selected item. The other screens will read `activeTab` to show the correct content.
+
+<Tip>
+  Use recognizable icons for your tabs. Ask the AI to use [Heroicons](https://heroicons.com/) or [Lucide](https://lucide.dev/) — both are free, React-compatible icon libraries that look native on mobile.
+</Tip>
+
+---
+
+## A Home Feed Screen
+
+The Home screen is the heart of most mobile apps. A vertical card feed is one of the most-tested patterns in mobile UX — and one of the fastest to prototype with AI.
+
+<CodeGroup>
+```text Home Feed Screen Prompt
+Create a mobile home feed screen for the app using Tailwind CSS:
+- A sticky top header bar: app name on the left, notification bell icon on
+  the right
+- A horizontal scrollable "category pills" row just below the header
+- A vertical scrollable list of content cards, each showing:
+    - A cover image placeholder (gray rectangle, 16:9 ratio)
+    - A category tag
+    - A title (1–2 lines)
+    - Author avatar (initials circle), name, and relative timestamp
+    - A heart/bookmark icon in the top-right corner of the card
+- Cards have a white background, rounded corners, and a subtle shadow
+- Include 8 placeholder cards inline
+- The feed scrolls inside the mobile frame, not the whole page
+```
+</CodeGroup>
+
+**What to expect:** A scrollable feed that stays within the phone frame, with a sticky header and a horizontal category strip. The placeholder cards look content-rich without requiring real images.
+
+---
+
+## Touch Interactions
+
+Make your prototype feel native by adding interaction feedback. These micro-interactions signal to testers — and to the AI — that the UI is interactive, not static.
+
+<Accordion title="Tap Feedback (Scale on Press)">
+```text Tap Feedback Prompt
+Add a press/tap animation to all tappable elements in the feed:
+- On mousedown (simulating touch press): scale the element down to 96%
+- On mouseup or mouseleave: scale back to 100%
+- Use Tailwind's transition and active: variants for the animation
+- Apply to cards, buttons, and tab items
+```
+</Accordion>
+
+<Accordion title="Swipe to Dismiss">
+```text Swipe to Dismiss Prompt
+Add swipe-to-dismiss to notification items using React state and mouse events:
+- Track drag start X position on mousedown
+- If the user drags more than 80px to the left before mouseup, animate the
+  item off screen and remove it from the list
+- Use a CSS transition on transform: translateX for the animation
+- No external libraries — just React useState and event handlers
+```
+</Accordion>
+
+<Accordion title="Pull to Refresh">
+```text Pull to Refresh Prompt
+Add a visual pull-to-refresh indicator to the feed:
+- Detect a downward drag on the feed container starting from the top
+- Show a loading spinner at the top of the feed when the pull exceeds 60px
+- After 1.5 seconds, hide the spinner and shuffle the placeholder cards to
+  simulate a refresh
+- Use React useState and onMouseDown/onMouseMove events
+```
+</Accordion>
+
+<Warning>
+  Mouse-event simulations of touch interactions work well in desktop browsers but won't perfectly replicate native touch behavior on a real device. For high-fidelity touch testing, deploy the prototype and open it on a physical phone — the browser's native touch events will take over automatically.
+</Warning>
+
+---
+
+## Responsive vs. Mobile-First
+
+This prototype is **mobile-only by design** — and that's intentional. It's worth understanding the distinction:
+
+| | This Prototype | Responsive Web App |
+|---|---|---|
+| **Viewport** | Fixed at 375px | Adapts to any screen width |
+| **Navigation** | Bottom tab bar | Top nav or sidebar |
+| **Touch** | Simulated via mouse events | Native on mobile, mouse on desktop |
+| **Purpose** | Test mobile UX specifically | Ship to all devices |
+
+If your product is purely mobile, this approach is correct. If you're prototyping a responsive product that also has a mobile view, consider building the desktop layout first (see the [Dashboard Prototype](/examples/dashboard-prototype) example) and then adapting it.
+
+<Note>
+  You can always prompt the AI to convert a mobile-only prototype into a responsive layout later: *"Make this component responsive — stack vertically below 640px, show a sidebar layout above 1024px."*
+</Note>
+
+---
+
+## Sharing Mobile Prototypes
+
+Getting your mobile prototype in front of testers is straightforward — the phone frame means even desktop viewers immediately understand the context.
+
+<CardGroup cols={2}>
+  <Card title="CodeSandbox at 375px" icon="code" href="https://codesandbox.io">
+    Open your sandbox and set the preview panel width to 375px. Share the sandbox URL — viewers see the phone frame, not a stretched browser layout.
+  </Card>
+  <Card title="Deploy to Vercel" icon="triangle" href="https://vercel.com">
+    Push your project to GitHub and connect it to Vercel. Share the deployed URL — testers can open it on a real phone and interact with real touch events.
+  </Card>
+  <Card title="StackBlitz Embed" icon="bolt" href="https://stackblitz.com">
+    Use StackBlitz's embed feature to drop the prototype directly into a Notion page or a Confluence doc for inline stakeholder review.
+  </Card>
+  <Card title="Netlify Drop" icon="cloud-arrow-up" href="https://app.netlify.com/drop">
+    Export your project as a build and drag-and-drop the folder onto Netlify Drop for an instant public URL — no account needed.
+  </Card>
+</CardGroup>
+
+<Tip>
+  Share a QR code linking to your deployed prototype in stakeholder meetings — testers can open it directly on their phones. Use a free generator like [qr-code-generator.com](https://www.qr-code-generator.com/) and paste it into your presentation slide next to the demo.
+</Tip>

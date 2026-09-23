@@ -1,0 +1,132 @@
+---
+title: "Generate UI Components with AI Assistance"
+sidebarTitle: "Generating Components"
+description: "Step-by-step guide to generating reusable UI components from design descriptions using AI coding assistants."
+---
+
+Once you have a prompt, generating the actual component is straightforward. This page walks through the generation process from submitting your prompt to having a working file in your repository — no prior coding experience required.
+
+<Note>
+  You don't need to understand every line of generated code to evaluate whether it looks right. Focus on the visual output. Your job is to assess the prototype against your design intent, not to audit the implementation.
+</Note>
+
+---
+
+## Generation Workflow
+
+<Steps>
+  <Step title="Open your AI assistant">
+    Launch [Cursor](https://cursor.sh) or open a conversation in [Claude](https://claude.ai). If you're using Cursor, open the chat panel with `Cmd+L` (Mac) or `Ctrl+L` (Windows). If you're using Claude, start a new conversation.
+  </Step>
+
+  <Step title="Paste your prompt">
+    Paste the prompt you crafted using the [Design to Prompt](/workflow/design-to-prompt) guide. Send it as a single message — don't split it across multiple messages on the first generation, as the AI needs the full picture before it starts writing code.
+  </Step>
+
+  <Step title="Review the generated code">
+    When the AI responds with code, scan it at a high level before copying:
+    - Does the **structure** look right? (Look for the element names you described — button, input, card, etc.)
+    - Is the **framework** correct? (React components start with `function` or `const`, HTML files start with `<!DOCTYPE html>`)
+    - Is the **length** roughly what you'd expect? (A simple card shouldn't be 500 lines)
+
+    You don't need to read every line — that's the AI's job.
+  </Step>
+
+  <Step title="Ask for adjustments if needed">
+    If something looks off — wrong framework, missing element, incorrect structure — tell the AI what to fix before saving. For example:
+
+    <CodeGroup>
+    ```text Adjustment Prompt Example
+    This looks good but you used plain CSS classes instead of Tailwind.
+    Please rewrite using Tailwind utility classes only.
+    ```
+    </CodeGroup>
+
+    Keep adjustments focused. Change one thing at a time so you know what caused any new issues.
+  </Step>
+
+  <Step title="Save the file into your repository">
+    Copy the generated code and save it as a new file inside the `components/` folder of your project. Follow the folder structure below for where to put it. Name the file clearly — for example, `LoginCard.jsx` or `NavigationSidebar.jsx`.
+  </Step>
+
+  <Step title="Preview the component in the browser">
+    Open the component in your preview environment (see [Previewing Your Prototype](#previewing-your-prototype) below). Evaluate it against your wireframe. If it needs changes, move to the [Iterating with AI](/workflow/iterating-with-ai) guide.
+  </Step>
+</Steps>
+
+---
+
+## Where to Save Components
+
+A consistent folder structure keeps your prototype organized as it grows. Use this layout as your default:
+
+<CodeGroup>
+```text Recommended Folder Structure
+/components
+  /ui         # Reusable UI elements (buttons, inputs, cards, badges)
+  /screens    # Full page layouts (LoginScreen, DashboardScreen)
+  /flows      # Multi-screen sequences (OnboardingFlow, CheckoutFlow)
+
+/prompts
+  /templates  # Reusable prompt templates for future components
+  /generated  # Prompts that produced good results (save these!)
+```
+</CodeGroup>
+
+**Why this matters:** As your prototype grows, you'll reuse components across multiple screens. Keeping `/ui` elements separate from `/screens` means you can drop the same `Button.jsx` or `InputField.jsx` into any screen without duplicating code — and when you change the button style, it updates everywhere at once.
+
+<Tip>
+  Save prompts that worked well in `/prompts/generated`. They become your personal library for future projects and make it much faster to generate similar components again.
+</Tip>
+
+---
+
+## Previewing Your Prototype
+
+You have three good options for previewing your generated components without setting up a local development environment.
+
+<CardGroup cols={3}>
+  <Card title="CodeSandbox" icon="box" href="https://codesandbox.io">
+    Paste code directly into the browser editor and see a live preview instantly. No account required for basic use. Best for quick one-off previews.
+  </Card>
+  <Card title="StackBlitz" icon="bolt" href="https://stackblitz.com">
+    Connects to GitHub repositories. Great when you're saving files to a repo and want a persistent preview that updates as you commit. Supports React, Vue, and plain HTML.
+  </Card>
+  <Card title="Local Dev Server" icon="server">
+    Run `npm run dev` or `npx vite` in your project folder to launch a local server at `localhost:3000`. Fastest for active iteration once you have Node.js installed.
+  </Card>
+</CardGroup>
+
+**Pasting into CodeSandbox** is the fastest way to see your first component:
+
+<Steps>
+  <Step title="Go to codesandbox.io/s/new">
+    This opens a blank React sandbox instantly in your browser.
+  </Step>
+  <Step title="Open App.js in the file panel">
+    Click `App.js` in the left file panel to open it in the editor.
+  </Step>
+  <Step title="Replace the contents with your generated component">
+    Select all the existing code (`Cmd+A` / `Ctrl+A`) and paste your generated component code over it.
+  </Step>
+  <Step title="Check the preview panel on the right">
+    CodeSandbox automatically re-renders on paste. Your component should appear in the right-hand preview panel within a few seconds.
+  </Step>
+</Steps>
+
+---
+
+## When Generation Fails
+
+If the AI produces something that's clearly wrong or broken, don't start over — adjust your prompt. Most failures fall into three categories:
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| Output is too generic or missing elements | Prompt was too vague | Add more specifics: name every component, describe the layout precisely |
+| Wrong framework or syntax | Framework wasn't specified | Add "using React with JSX" or "using plain HTML and CSS" to your prompt |
+| Output is garbled or incomplete | Too much requested at once | Break the prompt into smaller pieces — one component at a time |
+| Styles look completely off | No design system reference | Specify "using Tailwind CSS" or paste in your color tokens and font names |
+
+<Warning>
+  If the AI repeatedly produces broken output for a complex component, try building it in pieces. Generate the card shell first, then the form fields, then the button — then ask the AI to combine them. This divide-and-conquer approach almost always works better than one large prompt.
+</Warning>

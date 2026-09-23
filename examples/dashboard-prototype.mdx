@@ -1,0 +1,172 @@
+---
+title: "Prototype an Analytics Dashboard with AI"
+sidebarTitle: "Dashboard Prototype"
+description: "A complete walkthrough of building an analytics dashboard prototype using AI — from initial prompt to shareable, interactive mockup."
+---
+
+Dashboards are one of the most common UX prototyping requests. This example walks through building a complete analytics dashboard prototype from a design brief to a shareable interactive mockup — no prior coding experience required.
+
+---
+
+## The Design Brief
+
+Before writing a single prompt, ground your work in a realistic brief. Here's the one we'll use throughout this example:
+
+<Card title="Analytics Dashboard Brief" icon="clipboard">
+  **Product:** SaaS project management tool
+
+  **Goal:** Give users an at-a-glance view of team performance and project health.
+
+  **Requirements:**
+  - **Top KPI strip** — four stat cards showing key metrics (active projects, tasks completed, team members, revenue)
+  - **Chart section** — a line chart showing activity over the past 30 days
+  - **Recent activity feed** — a live-updating list of the latest team actions
+  - **Responsive layout** — sidebar collapses on mobile; cards stack vertically
+</Card>
+
+With a brief like this, you have everything you need to write focused, specific prompts.
+
+---
+
+## Step 1: The Layout Prompt
+
+Start with the skeleton — the overall page structure that everything else will slot into. Getting the layout right first means you won't have to restructure later.
+
+<CodeGroup>
+```text Dashboard Layout Prompt
+Create a React analytics dashboard layout using Tailwind CSS with:
+- A fixed top navigation bar with logo, search, and user avatar
+- A collapsible left sidebar with icon + label navigation items
+- A main content area with padding
+- Page title and breadcrumb at the top of content
+Make it fully responsive: sidebar collapses on mobile.
+```
+</CodeGroup>
+
+**What to expect:** The AI will generate a full-page shell with a `<nav>`, a `<aside>`, and a `<main>` region. The sidebar will include a toggle button and a responsive `hidden md:flex` pattern to collapse on smaller screens.
+
+<Note>
+  Don't worry if the generated code looks long. Focus on the visual output in your preview window — you can always ask the AI to adjust spacing, colors, or fonts in a follow-up prompt.
+</Note>
+
+---
+
+## Step 2: KPI Cards Prompt
+
+With the layout in place, add the top stats strip. KPI cards are self-contained components, so you can build them independently and drop them into your layout.
+
+<CodeGroup>
+```text KPI Cards Prompt
+Add a KPI cards section to the dashboard main area using Tailwind CSS:
+- Four stat cards in a responsive grid (4 columns on desktop, 2 on tablet, 1 on mobile)
+- Each card shows: an icon, a metric label, a large number, and a percentage change badge
+- Badge is green for positive change, red for negative
+- Use these example values:
+    - Active Projects: 24, +12%
+    - Tasks Completed: 1,280, +8%
+    - Team Members: 36, 0%
+    - Monthly Revenue: $48,500, -3%
+- Give each card a white background, subtle shadow, and rounded corners
+```
+</CodeGroup>
+
+**What to expect:** Four polished stat cards with color-coded badges and placeholder data that looks real enough for stakeholder reviews. The responsive grid means they'll stack cleanly on mobile without any extra work.
+
+<Tip>
+  Use realistic-looking placeholder data in your dashboard. Tools like [Faker.js](https://fakerjs.dev/) can generate mock numbers and names that make your prototype feel production-ready during user testing.
+</Tip>
+
+---
+
+## Step 3: Chart Component
+
+The chart section is where dashboards live or die in usability testing. Ask the AI to scaffold a complete chart component with realistic placeholder data baked in.
+
+<CodeGroup>
+```text Chart Component Prompt
+Add a line chart to the dashboard using the Recharts library:
+- Show "Tasks Completed Over Time" for the past 30 days
+- X-axis: dates (abbreviated like "Jan 1")
+- Y-axis: task count (0–100)
+- Smooth curved line in indigo (#6366f1)
+- Tooltip on hover showing date and value
+- Responsive container that fills its parent width
+- Include 30 days of realistic-looking placeholder data inline
+```
+</CodeGroup>
+
+**What to expect:** A fully wired `<LineChart>` component from Recharts with inline mock data and a `<ResponsiveContainer>` wrapper. The chart will resize automatically when the browser window changes.
+
+<Note>
+  If the AI generates a chart using Chart.js instead of Recharts, that's fine — both work well for prototyping. If you want a specific library, be explicit in your prompt: *"Use Recharts specifically."*
+</Note>
+
+---
+
+## Step 4: Recent Activity Feed
+
+The activity feed brings the dashboard to life and is a common pattern for communicating recency and engagement.
+
+<CodeGroup>
+```text Activity Feed Prompt
+Add a "Recent Activity" feed component to the dashboard using Tailwind CSS:
+- A vertical list of activity items
+- Each item has: a user avatar (initials-based, colored circle), a description
+  of the action, a relative timestamp ("2 minutes ago"), and an icon for the
+  action type (task, comment, file upload)
+- Alternate row background colors for readability
+- A "View all activity" link at the bottom
+- Include 8 realistic placeholder activity entries inline
+```
+</CodeGroup>
+
+**What to expect:** A styled list component with varied action types and timestamps that looks like a real activity stream. Initials-based avatars avoid the need for image assets.
+
+---
+
+## Assembling the Prototype
+
+Once you have all four components, combine them into a single cohesive page. Follow these steps:
+
+<Steps>
+  <Step title="Create a single Dashboard page file">
+    Ask the AI: *"Combine the layout shell, KPI cards, line chart, and activity feed into a single `Dashboard.jsx` file."* The AI will handle the imports and composition.
+  </Step>
+  <Step title="Resolve any import conflicts">
+    If the AI used different component names across sessions, prompt it: *"Rename conflicting components and ensure all imports resolve correctly."*
+  </Step>
+  <Step title="Apply consistent spacing and color">
+    Run a polish pass: *"Ensure consistent spacing throughout the dashboard using Tailwind's spacing scale. Use a light gray (#f9fafb) page background."*
+  </Step>
+  <Step title="Verify mobile layout">
+    Resize your preview window to 375px wide and check that the sidebar collapses, cards stack, and the feed is scrollable. Prompt fixes for anything that breaks.
+  </Step>
+  <Step title="Add a loading skeleton (optional)">
+    For a more polished demo: *"Add Tailwind-animated loading skeletons for the KPI cards and chart that show for 1.5 seconds on initial load."*
+  </Step>
+</Steps>
+
+---
+
+## Sharing the Prototype
+
+Once your dashboard is assembled, get it in front of stakeholders quickly.
+
+<CardGroup cols={2}>
+  <Card title="CodeSandbox" icon="code" href="https://codesandbox.io">
+    Paste your code into a new React sandbox. Instantly shareable via a URL — no account required for viewers. Ideal for async feedback.
+  </Card>
+  <Card title="GitHub Pages" icon="github" href="https://pages.github.com">
+    Push your project to a GitHub repository and enable Pages in the repo settings. Your prototype gets a permanent, public URL — great for ongoing testing rounds.
+  </Card>
+  <Card title="Vercel" icon="triangle" href="https://vercel.com">
+    Connect your GitHub repo to Vercel for one-click deploys. Every git push auto-deploys a new version — perfect if you're iterating quickly.
+  </Card>
+  <Card title="StackBlitz" icon="bolt" href="https://stackblitz.com">
+    Like CodeSandbox but runs entirely in the browser. Supports React out of the box and generates a shareable link instantly.
+  </Card>
+</CardGroup>
+
+<Tip>
+  When sharing with stakeholders, include a short context note alongside the link — for example: *"This is a visual prototype only. Data is mocked. We're testing layout and navigation, not functionality."* This frames expectations and focuses feedback.
+</Tip>

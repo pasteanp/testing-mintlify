@@ -1,0 +1,113 @@
+---
+title: "Translate Your Design into an AI Prompt"
+sidebarTitle: "Design to Prompt"
+description: "Learn how to convert your UX design concepts, wireframes, and requirements into effective AI prompts that generate accurate prototypes."
+---
+
+The most important skill in AI prototyping is translating what you see in your head — or in your wireframes — into a written prompt the AI can act on. A vague prompt produces vague output; a structured, specific prompt produces a working component you can drop straight into your prototype. This page teaches you how to write prompts that get results.
+
+## The Anatomy of a Good Prompt
+
+Every effective AI prompt for UI generation contains four parts. Think of them as the same four questions you'd answer when handing a design spec to a developer.
+
+<CardGroup cols={2}>
+  <Card title="Context" icon="circle-info">
+    **What is this?** Tell the AI what screen, component, or flow you're building and where it lives in the product. Include the framework (React, plain HTML, Vue) and any design system you're using.
+  </Card>
+  <Card title="Structure" icon="table-columns">
+    **Layout and components.** Describe the arrangement of elements — columns, cards, stacks — and list the specific UI components you need (inputs, buttons, nav items, icons).
+  </Card>
+  <Card title="Style" icon="palette">
+    **Visual treatment.** Specify colors, typography, spacing, border-radius, shadows, and any other visual details. Reference your design system tokens by name whenever possible.
+  </Card>
+  <Card title="Behavior" icon="computer-mouse">
+    **Interactions and states.** Describe what happens when a user interacts with the component — hover states, error states, loading states, transitions, and animations.
+  </Card>
+</CardGroup>
+
+You don't need to include every part in every prompt. For a simple static component, Context and Structure may be enough. For anything interactive, always include Behavior.
+
+---
+
+## From Wireframe to Prompt
+
+Here's how the four-part anatomy works in practice. Start with a wireframe description — what you'd write in a handoff note — and build it into a complete prompt.
+
+**The wireframe:** A centered login card on a white background. The card contains a heading ("Welcome back"), an email field, a password field, a primary sign-in button, and a "Forgot password?" text link underneath. There should be an error message that appears below the button when credentials are wrong.
+
+**The resulting prompt:**
+
+<CodeGroup>
+```text Login Screen Prompt
+Create a React login screen component with:
+- A centered card layout, max-width 400px
+- Email and password input fields with labels
+- A primary CTA button labeled "Sign In"
+- A "Forgot password?" link below the button
+- Error state display for invalid credentials
+- Clean, minimal styling using Tailwind CSS
+```
+</CodeGroup>
+
+Notice what makes this prompt effective:
+- **Framework is specified** — React, not "a web component"
+- **Layout is described** — centered card, max-width constraint
+- **Every element is listed** — nothing is assumed
+- **A behavior state is included** — the error condition
+- **Styling approach is named** — Tailwind CSS, not "make it look nice"
+
+<Tip>
+  Include your design system's color tokens and font names directly in prompts — for example, `use the color #ef7025 for primary actions` or `use the Inter font family` — to get on-brand output immediately without a round of style corrections.
+</Tip>
+
+---
+
+## Prompt Templates
+
+Use these fill-in-the-blank templates as starting points for the three most common prototyping tasks. Copy, fill in the brackets, and send.
+
+<CodeGroup>
+```text New Screen / Page
+Create a [React / HTML / Vue] [screen name] screen with:
+- Layout: [describe the overall layout — sidebar + content, full-width, centered card, etc.]
+- Header: [describe the header or navigation, or write "none"]
+- Main content: [list the key sections and components on the page]
+- Footer: [describe footer content, or write "none"]
+- Responsive behavior: [how it should adapt on mobile]
+- Styling: [framework or design system, e.g. Tailwind CSS / CSS Modules / Material UI]
+- Color: primary [your hex code], background [your hex code]
+- Font: [your font name and sizes]
+```
+
+```text UI Component
+Create a [React / HTML] [component name] component with:
+- Purpose: [one sentence — what this component does and where it's used]
+- Props / inputs: [list any configurable options, e.g. label text, icon, size variant]
+- States: [list all states — default, hover, active, disabled, loading, error, empty]
+- Size: [width, height, or max-width constraints]
+- Styling: [Tailwind / CSS-in-JS / plain CSS + your token names]
+- Accessibility: [keyboard navigation, ARIA labels, focus ring style]
+```
+
+```text Interaction / Animation
+Add the following interaction to [component name]:
+- Trigger: [what the user does — hover, click, scroll, form submit, page load]
+- Effect: [what changes visually — scale, fade, slide, color change, spinner appears]
+- Duration: [e.g. 200ms, 400ms]
+- Easing: [e.g. ease-in-out, spring, linear]
+- Reset: [does it reverse when the trigger ends? On click elsewhere?]
+- Do not change any existing layout or styles — only add the interaction.
+```
+</CodeGroup>
+
+---
+
+## Common Mistakes
+
+Even experienced designers run into the same prompt pitfalls. Watch out for these:
+
+- **Too vague.** "Make a nice dashboard" gives the AI nothing to work with. Name every element you need.
+- **No context.** Forgetting to specify the framework or design system means the AI picks one for you — often the wrong one.
+- **Conflicting instructions.** Asking for "a minimal design" and "lots of detail" in the same prompt leads to inconsistent output. Pick one direction.
+- **Asking for too much at once.** A prompt that requests a full five-screen onboarding flow will produce a tangled result. Build screen by screen, component by component.
+- **Skipping states.** If you don't mention hover, error, or loading states, they won't be generated. List every state you need.

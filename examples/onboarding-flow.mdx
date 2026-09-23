@@ -1,0 +1,165 @@
+---
+title: "Prototype a Multi-Step Onboarding Flow"
+sidebarTitle: "Onboarding Flow"
+description: "Build an interactive multi-step onboarding flow prototype with AI — including form validation, progress indicators, and smooth transitions."
+---
+
+Onboarding flows are critical to first impressions and are frequently tested early in product development. This example shows how to prototype a multi-step onboarding sequence with AI — complete with progress indicators, form validation, and animated step transitions that feel real enough for meaningful usability testing.
+
+---
+
+## Defining the Flow
+
+Map out the full flow before writing any prompts. Knowing the structure upfront lets you write targeted prompts for each piece and assemble them cleanly.
+
+The flow we'll build has four steps:
+
+<Steps>
+  <Step title="Welcome">
+    Greet the user with a branded illustration, a headline, and a single "Get Started" CTA. No form inputs — just set the tone.
+  </Step>
+  <Step title="Profile Setup">
+    Collect name, email, job title, and company. Includes inline validation — required fields, email format check.
+  </Step>
+  <Step title="Preferences">
+    Let the user choose their areas of interest via a checkbox card grid. At least one selection required to proceed.
+  </Step>
+  <Step title="Confirmation">
+    A success state showing the user's name, a summary of their selections, and a "Go to Dashboard" button.
+  </Step>
+</Steps>
+
+<Note>
+  For stakeholder testing, onboarding flows work especially well in CodeSandbox because testers can walk through the full experience without any setup — just open the link and go.
+</Note>
+
+---
+
+## Prompt for the Shell
+
+Build the container component first. This handles step state, the progress bar, and navigation buttons. The individual step content will slot in later.
+
+<CodeGroup>
+```text Onboarding Shell Prompt
+Create a React multi-step onboarding component using Tailwind CSS:
+- A progress bar at the top showing current step (1 of 4)
+- Step title and description
+- Content area that changes per step
+- Back and Next buttons at the bottom
+- Smooth fade transition between steps
+Manage step state with useState.
+```
+</CodeGroup>
+
+**What to expect:** A self-contained `<OnboardingShell>` component with a `currentStep` state, a progress bar that fills as steps advance, and placeholder content for each step slot. The fade transition uses a CSS opacity animation triggered by step change.
+
+<Tip>
+  Ask the AI to center the onboarding card on a neutral background: *"Wrap the component in a full-screen container with a light gray background and center the card vertically and horizontally."* This makes it look polished in demos.
+</Tip>
+
+---
+
+## Prompts for Individual Steps
+
+With the shell in place, build each step as a standalone component and drop it into the shell's content area.
+
+<Accordion title="Step 1 — Welcome Screen">
+```text Welcome Step Prompt
+Create a React onboarding welcome step component using Tailwind CSS:
+- A centered illustration (use a placeholder SVG or emoji graphic)
+- A bold headline: "Welcome to Acme — let's get you set up"
+- A short subtext paragraph (1–2 sentences)
+- No form fields — just a visual, welcoming entry point
+- The "Next" button in the shell triggers the advance to step 2
+```
+</Accordion>
+
+<Accordion title="Step 2 — Profile Setup Form">
+```text Profile Step Prompt
+Create a React profile setup form for the onboarding flow using Tailwind CSS:
+- Four labeled text inputs: Full Name, Email Address, Job Title, Company
+- All fields stacked vertically with consistent spacing
+- Show a placeholder value in each input (e.g., "Jane Smith", "jane@acme.com")
+- No validation yet — just the form layout
+- Clean, minimal styling with focus ring on active input
+```
+</Accordion>
+
+<Accordion title="Step 3 — Preferences Selection">
+```text Preferences Step Prompt
+Create a React preferences step for the onboarding flow using Tailwind CSS:
+- A prompt: "What are you here to do? Choose all that apply."
+- Six options displayed as selectable cards in a 2-column grid:
+  Manage Projects, Track Time, Collaborate with Team,
+  Generate Reports, Manage Budgets, Automate Workflows
+- Each card has an icon, a label, and a selected state (highlighted border + checkmark)
+- Toggle selection on click using useState
+```
+</Accordion>
+
+<Accordion title="Step 4 — Confirmation Screen">
+```text Confirmation Step Prompt
+Create a React confirmation screen for the final onboarding step using Tailwind CSS:
+- A large animated checkmark or success icon (green)
+- Headline: "You're all set, [Name]!" — use the name collected in step 2
+- A brief summary: display the preferences they selected as tags or a list
+- A prominent "Go to Dashboard" CTA button
+- Celebratory but understated — no confetti, just a clean success state
+```
+</Accordion>
+
+---
+
+## Adding Validation
+
+Once all four steps render, add validation to the Profile step so your prototype tests how errors are communicated.
+
+<CodeGroup>
+```text Validation Prompt
+Add form validation to the Profile Setup step:
+- Full Name: required, minimum 2 characters
+- Email Address: required, must match a valid email format
+- Job Title: optional
+- Company: optional
+- Show inline error messages below each invalid field in red (#ef4444)
+- Prevent the "Next" button from advancing if required fields are invalid
+- Trigger validation on "Next" click, not on every keystroke
+```
+</CodeGroup>
+
+**What to expect:** Each required field gets a conditional error message rendered below it. The `Next` button calls a `validateStep()` function before advancing `currentStep`. Errors disappear when the user corrects the field and clicks Next again.
+
+<Warning>
+  Avoid asking the AI to add validation to all steps in one prompt — it tends to generate overly complex logic. Do one step at a time and test each before continuing.
+</Warning>
+
+---
+
+## Testing the Flow
+
+Before sharing with stakeholders, run through this checklist yourself:
+
+<CardGroup cols={2}>
+  <Card title="All steps reachable" icon="map">
+    Click "Next" through all four steps without filling in any data. Confirm each step renders and the progress bar advances correctly.
+  </Card>
+  <Card title="Back navigation works" icon="arrow-left">
+    Use the "Back" button from each step (except step 1) and confirm you return to the correct previous step with no state loss.
+  </Card>
+  <Card title="Validation triggers correctly" icon="shield-check">
+    On the Profile step, click "Next" without filling in required fields. Confirm error messages appear. Fill in valid data and confirm you can advance.
+  </Card>
+  <Card title="Confirmation state shows on completion" icon="circle-check">
+    Complete all steps and confirm the success screen appears with the correct name and selected preferences displayed.
+  </Card>
+  <Card title="Transitions feel smooth" icon="wand-magic-sparkles">
+    Step through the flow quickly and confirm the fade transitions don't flicker or stack. Reduce animation duration if they feel sluggish.
+  </Card>
+  <Card title="Mobile layout holds up" icon="mobile">
+    Resize to 375px wide. Confirm the card, form, and buttons all remain usable at mobile width.
+  </Card>
+</CardGroup>
+
+<Tip>
+  Record a short screen-capture walkthrough of the completed flow using a tool like Loom. Attach it alongside your CodeSandbox link when sharing with stakeholders — it gives context and reduces the chance of testers getting confused mid-flow.
+</Tip>
